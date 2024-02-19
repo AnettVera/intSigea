@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Avatar } from '@rneui/themed';
-
+import { Input } from '@rneui/base';
+//no supe si quitar el nombre o dejarlo
 nombre="Sebastian Sota Garcia"
 n=nombre[0];
 export default function Settings() {
@@ -9,13 +10,50 @@ export default function Settings() {
 
     <View style={styles.container}>
       <Avatar
-        size={70}
+        size={80}
         rounded
         title={n}
-      containerStyle={{ backgroundColor: "#052368", marginVertical:20 }}
+      containerStyle={{ backgroundColor: "#052368", marginVertical:20 , borderColor: "#4480FF", borderWidth: 5}}
       />
 
-      <Text style={styles.name}>{nombre}</Text>
+      <Text style={styles.name}>{nombre}</Text> 
+      
+
+    <Input 
+    label='Nombre de usuario'
+    labelStyle={styles.label} 
+    inputContainerStyle={styles.form}
+    inputStyle={styles.input}
+    />
+
+  <Input 
+    label='Nombre'
+    labelStyle={styles.label}
+    inputContainerStyle={styles.form}
+    inputStyle={styles.input}
+  />
+
+  <Input 
+    label='Apellido'
+    labelStyle={styles.label}
+    inputContainerStyle={styles.form}
+    inputStyle={styles.input}
+  />
+
+  <Input 
+    label='CURP' 
+    labelStyle={styles.label}
+    inputContainerStyle={styles.form}
+    inputStyle={styles.input}
+  />
+  
+  <Input 
+    label='Contraseña'
+    labelStyle={styles.label} 
+    inputContainerStyle={styles.form}
+    inputStyle={styles.input}
+  />
+
     </View>
   )
 }
@@ -25,10 +63,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: "center",
   },
   name:{
     fontSize:20,
     fontWeight:'bold',
-  }
+    marginVertical:20,
+  },
+  input: {
+    paddingHorizontal:16,
+    justifyContent: 'center',
+  },
+  label:{
+    color: '#6B82B8',
+    fontSize:18,
+    marginStart: 30,
+    fontWeight: 'bold',
+  },
+  form: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    marginStart: 30,
+  },
 })
+
 
