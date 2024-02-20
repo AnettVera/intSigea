@@ -1,25 +1,31 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
-import Teachers from '../../modules/admin/Teachers/adapters/screens/Teachers'
+import { View, Text } from 'react-native';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import Teachers from '../../modules/admin/Teachers/adapters/screens/Teachers';
+import TeacherSettings from './../../modules/admin/Teachers/adapters/screens/TeachersSettings'; // Asegúrate de proporcionar la ruta correcta
 
-const Stack= createStackNavigator();
-
+const Stack = createStackNavigator();
+nombre="Jose Alberto";
 export default function TeachersStack() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#4480FF', 
+          backgroundColor: '#4480FF',
         },
-        headerTintColor: '#FFF', 
+        headerTintColor: '#FFF',
       }}
     >
-        <Stack.Screen
-            name='Teachers'
-            component={Teachers}
-            options={{title:'Docentes'}}
-        />
+      <Stack.Screen
+        name='Teachers'
+        component={Teachers}
+        options={{ title: 'Docentes' }}
+      />
+      <Stack.Screen
+        name='TeacherSettings'
+        component={TeacherSettings}
+        options={{ title: "Jose Alberto"}} 
+      />
     </Stack.Navigator>
-  )
+  );
 }
