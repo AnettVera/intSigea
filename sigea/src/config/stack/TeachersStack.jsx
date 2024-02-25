@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Teachers from '../../modules/admin/Teachers/adapters/screens/Teachers';
-import TeacherSettings from './../../modules/admin/Teachers/adapters/screens/TeachersSettings'; // Asegúrate de proporcionar la ruta correcta
+import TeachersSettings from './../../modules/admin/Teachers/adapters/screens/TeachersSettings'; // Asegúrate de proporcionar la ruta correcta
 
 const Stack = createStackNavigator();
 nombre="Jose Alberto";
@@ -22,8 +22,8 @@ export default function TeachersStack() {
         options={{ title: 'Docentes' }}
       />
       <Stack.Screen
-        name='TeacherSettings'
-        component={TeacherSettings}
+        name='TeachersSettings'
+        component={TeachersSettings}
         options={{ title: "Jose Alberto"}} 
       />
     </Stack.Navigator>
