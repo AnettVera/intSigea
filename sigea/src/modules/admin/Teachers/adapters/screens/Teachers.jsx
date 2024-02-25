@@ -2,7 +2,7 @@ import { StyleSheet, ScrollView, FlatList, View, SafeAreaView } from 'react-nati
 import React from 'react';
 import { ListItem, SearchBar, Icon } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
-import ListUsers from '../../../components/ListUsers';
+import ListUsers from './components/ListTeachers';
 
 export default function Teachers() {
   const navigation = useNavigation();
