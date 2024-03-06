@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Logo from '../../../../../assets/img/logo.png';
-import { Input } from '@rneui/themed';
+import { isEmpty } from "lodash";
+
+export default function Login({ onLoginSuccess }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showErrorMessage, setShowErrorMessage] = useState("");
+  const [userType, setUserType] = useState(""); 
+
+  const login = async () => {
+    if (!isEmpty(email) && !isEmpty(password)) {
+      setShowErrorMessage("");
+      
+      if (email === "Estudiante") {
+        setUserType("estudiante");
+      } else if (email === "Docente") {
+        setUserType("docente");
+      } else {
+        setShowErrorMessage("Usuario o contraseña incorrectos");
+        setUserType(""); 
+      }
+    } else {
+      setShowErrorMessage("Campos obligatorios");
+    }
+  };
 
 
-export default function Login() {
-  const [form, setForm] = useState({
-    username: '',
-    password: '',
-  });
+  useEffect(() => {
+    if (userType) {
+      onLoginSuccess(userType);
+    }
+  }, [userType, onLoginSuccess]);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-
         <Text style={styles.title}>Inicio de sesión</Text>
         <Image
           alt='logo'
@@ -24,29 +46,37 @@ export default function Login() {
       </View>
 
       <View style={styles.form}>
+      
         <View style={styles.input}>
+        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
           <Text style={styles.inputLabel}>Nombre de usuario</Text>
+          {showErrorMessage && <Text style={styles.errorMessage}>{showErrorMessage}</Text>}
+        </View>
           <TextInput
             placeholder='nombre_usuario'
             placeholderTextColor='#6b7288'
-            onChangeText={(text) => setForm({ ...form, username: text })}
+            onChangeText={(text) => setEmail(text)}
             style={styles.inputControl}
+            errorMessage={showErrorMessage}
           />
         </View>
 
         <View style={styles.input}>
-          <Text style={styles.inputLabel}>Contraseña</Text>
+          <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <Text style={styles.inputLabel}>Contraseña</Text>
+            {showErrorMessage && <Text style={styles.errorMessage}>{showErrorMessage}</Text>}
+          </View>
           <TextInput
             placeholder='********'
             placeholderTextColor='#6b7288'
+            onChangeText={(text) => setPassword(text)}
             style={styles.inputControl}
+            secureTextEntry={true} 
           />
-          </View>
+        </View>
 
         <View style={styles.formAction}>
-          <TouchableOpacity
-
-          >
+          <TouchableOpacity onPress={login}>
             <View style={styles.btn}>
               <Text style={styles.btnText}>Iniciar Sesión</Text>
             </View>
@@ -54,19 +84,22 @@ export default function Login() {
         </View>
       </View>
     </View>
-
   );
 }
 
 const styles = StyleSheet.create({
+  errorMessage: {
+    color: 'red',
+    marginTop: 5,
+  },
   container: {
     padding: 24,
     flex: 1,
-    backgroundColor:'#f9f9f9'
+    backgroundColor: '#f9f9f9',
   },
   header: {
     marginVertical: 46,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerImg: {
     width: 300,
@@ -77,21 +110,21 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#052368',
     textAlign: 'center',
-    marginTop:50,
+    marginTop: 50,
   },
   subtitle: {
     fontSize: 17,
     fontWeight: '500',
     textAlign: 'center',
-    letterSpacing:2,
-    color:'#4480FF',
-    fontWeight:'800',
+    letterSpacing: 2,
+    color: '#4480FF',
+    fontWeight: '800',
   },
   form: {
     fontSize: 15,
     fontWeight: '500',
     color: '#929292',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   input: {
     marginBottom: 10,
@@ -115,12 +148,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#4480FF',
     borderRadius: 8,
     borderWidth: 1,
-    height:40,
+    height: 40,
     borderColor: '#4480FF',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:25,
+    marginTop: 25,
     paddingHorizontal: 20,
   },
   btnText: {
@@ -128,12 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
-  form: {
-    marginBottom: 24,
-    flex: 1,
-  },
   formAction: {
     marginVertical: 24,
-  }
-
-})
+  },
+});

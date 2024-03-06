@@ -1,21 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { Label, TextInput } from 'flowbite-react'
-import './assets/styles.css'
-import Login from './modules/auth/Login'
+import { useEffect, useReducer } from 'react';
+import AuthContext from './config/context/auth-context';
+import { authManager } from './config/context/auth-manager';
+import AppRouter from './router/AppRouter';
+import './output.css';
 
-import './assets/styles.css';
+const init = () => {
+  return JSON.parse(localStorage.getItem('user')) || { signed: false };
+};
 
 function App() {
+  const [user, dispatch] = useReducer(authManager, {}, init);
+  useEffect(() => {
+    if (!user) return;
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
+  /*useEffect -> (callback, dependencies)
+    dependencies -> [user]
+    Si hay un cambio en user -> callback Se ejecuta nuevamente
+    
+  */
+
+  //React.Fragment
   return (
-    <div className="App">
-      <Login />
-    </div>
+    <AuthContext.Provider value={{ user, dispatch }}>
+      <AppRouter />
+    </AuthContext.Provider>
   );
 }
-
 export default App;
-

@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.1",
     "animate.css": "^4.1.1",
     "autoprefixer": "^10.4.17",
     "axios": "^1.6.7",
