@@ -3,9 +3,14 @@ import { Outlet, Link } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import { HiOutlineCog6Tooth, HiMiniCog6Tooth, HiOutlineUsers, HiMiniUsers, HiOutlineAcademicCap, HiAcademicCap } from 'react-icons/hi2';
+import { RiHome4Fill, RiHome4Line, RiUserFill, RiUserLine, RiGitRepositoryFill, RiGitRepositoryLine } from 'react-icons/ri';
+import { HiHome, HiOutlineHome } from "react-icons/hi2";
+import { BiBookBookmark, BiSolidBookBookmark } from "react-icons/bi";
+import { BiSolidDownArrow } from "react-icons/bi";
 
-const AdminLayout = () => {
+
+
+const TeacherLayout = () => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const [selectedSection, setSelectedSection] = useState('dashboard');
 
@@ -19,45 +24,45 @@ const AdminLayout = () => {
 
   const cogIcon = isSidebarExpanded ? (
     selectedSection === 'dashboard' ? (
-      <HiMiniCog6Tooth style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+      <HiHome style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
     ) : (
-      <HiOutlineCog6Tooth style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+      <HiOutlineHome style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
     )
   ) : (
     selectedSection === 'dashboard' ? (
-      <HiMiniCog6Tooth style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+      <HiHome style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
     ) : (
-      <HiOutlineCog6Tooth style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+      <HiOutlineHome style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    )
+  );
+  const proIcon = isSidebarExpanded ? (
+    selectedSection === 'profile' ? (
+      <RiUserFill style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    ) : (
+      <RiUserLine style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    )
+  ) : (
+    selectedSection === 'profile' ? (
+      <RiUserFill style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    ) : (
+      <RiUserLine style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    )
+  );
+  const subIcon = isSidebarExpanded ? (
+    selectedSection === 'subject' ? (
+      <BiSolidBookBookmark style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    ) : (
+      <BiBookBookmark style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    )
+  ) : (
+    selectedSection === 'subject' ? (
+      <BiSolidBookBookmark style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+    ) : (
+      <BiBookBookmark style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
     )
   );
 
-  const usersIcon = isSidebarExpanded ? (
-    selectedSection === 'teachers' ? (
-      <HiMiniUsers style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    ) : (
-      <HiOutlineUsers style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    )
-  ) : (
-    selectedSection === 'teachers' ? (
-      <HiMiniUsers style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    ) : (
-      <HiOutlineUsers style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    )
-  );
 
-  const academicCapIcon = isSidebarExpanded ? (
-    selectedSection === 'students' ? (
-      <HiAcademicCap style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    ) : (
-      <HiOutlineAcademicCap style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    )
-  ) : (
-    selectedSection === 'students' ? (
-      <HiAcademicCap style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    ) : (
-      <HiOutlineAcademicCap style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-    )
-  );
 
   return (
     <>
@@ -68,9 +73,10 @@ const AdminLayout = () => {
               <div className="relative flex h-11 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   <Disclosure.Button
-                    className={`relative inline-flex items-center justify-center rounded-md p-1 ml-10 ${open ? 'text-gray-400' : 'text-white'
+                    className={`relative inline-flex items-center justify-center rounded-md p-1 ${open ? 'text-gray-400' : 'text-white'
                       } hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white`}
                     onClick={toggleSidebar}
+                    style={{ position: 'absolute', left: '10px' }}
                   >
                     <span className="absolute -inset-0.5" />
                     <span className="sr-only">Toggle sidebar</span>
@@ -101,35 +107,36 @@ const AdminLayout = () => {
                       }`}
                   >
                     {cogIcon}
-                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Ajustes</span>}
+                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Inicio</span>}
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={'teachers'}
-                    onClick={() => handleSectionChange('teachers')}
-                    className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'teachers'
+                    to={'profile'}
+                    onClick={() => handleSectionChange('profile')}
+                    className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'profile'
                         ? 'text-zinc-950 bg-white font-bold'
                         : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                       }`}
                   >
-                    {usersIcon}
-                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Docentes</span>}
+                    {proIcon}
+                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Perfil</span>}
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={'students'}
-                    onClick={() => handleSectionChange('students')}
-                    className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'students'
+                    to={'subject'}
+                    onClick={() => handleSectionChange('subject')}
+                    className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'subject'
                         ? 'text-zinc-950 bg-white font-bold'
                         : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                       }`}
                   >
-                    {academicCapIcon}
-                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Estudiantes</span>}
+                    {subIcon}
+                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Materias</span>}
                   </Link>
                 </li>
+
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           </Sidebar>
@@ -142,4 +149,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default TeacherLayout;

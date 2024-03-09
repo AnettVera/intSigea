@@ -1,5 +1,3 @@
-/*navegar entre componentes 
-por medio de URL*/
 import React, { useContext } from 'react';
 import {
   createBrowserRouter,
@@ -10,87 +8,70 @@ import {
 import SignInPage from '../modules/auth/SignInPage';
 import AuthContext from '../config/context/auth-context';
 import AdminLayout from '../components/layout/AdminLayout';
+import TeacherLayout from '../components/layout/TeacherLayout';
 import DashboardPage from '../modules/admin/DashboardPage';
 import SettingsStudents from '../modules/admin/SettingsStudents';
 import SettingsTeachers from '../modules/admin/SettingsTeachers';
+import DashboardTeaceher from '../modules/teacher/DashboardPage';
+import SubjectPage from '../modules/teacher/SubjectPage';
+import UnitPage from '../modules/teacher/UnitPage';
+import ProfilePage from '../modules/teacher/ProfilePage'
+
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
-  // const routesFromRole = (role) => {
-  //   switch (role) {
-  //     case 'ADMIN_ROLE':
-  //       return (
-  //         <>
-  //           <Route
-  //             path="admin"
-  //             element={
-  //               <>
-  //                 {user.user.person?.name +
-  //                   ' ' +
-  //                   user.user.person?.surname +
-  //                   `${user.user.person?.lastname ?? ''}` +
-  //                   ' - ' +
-  //                   user?.roles[0]?.name}
-  //               </>
-  //             }
-  //           />
-  //         </>
-  //       );
-  //     case 'CLIENT_ROLE':
-  //       return (
-  //         <Route
-  //           path="admin"
-  //           element={
-  //             <>
-  //               {user.user.person?.name +
-  //                 ' ' +
-  //                 user.user.person?.surname +
-  //                 `${user.user.person?.lastname ?? ''}` +
-  //                 ' - ' +
-  //                 user?.roles[0]?.name}
-  //             </>
-  //           }
-  //         />
-  //       );
-  //     case 'USER_ROLE':
-  //       return (
-  //         <Route
-  //           path="admin"
-  //           element={
-  //             <>
-  //               {user.user.person?.name +
-  //                 ' ' +
-  //                 user.user.person?.surname +
-  //                 `${user.user.person?.lastname ?? ''}` +
-  //                 ' - ' +
-  //                 user?.roles[0]?.name}
-  //             </>
-  //           }
-  //         />
-  //       );
-  //   }
-  // };
+
+  const routesFromRole = (role) => {
+    switch (role) {
+      case 'ADMIN_ROLE':
+        return (
+          <>
+            <Route path="/" element={<AdminLayout user={user} />}>
+            <Route path='dashboard' element={<DashboardPage />} /> 
+            <Route path="teachers" element={<SettingsTeachers/>} />
+            <Route path="students" element={<SettingsStudents/>} />
+            </Route>
+          </>
+        );
+      case 'USER_ROLE':
+        return (
+          <>
+            <Route path="/" element={<TeacherLayout user={user} />}>
+              <Route path="dashboard" element={<DashboardTeaceher/>} />
+              <Route path="profile" element={<ProfilePage/>} />
+              <Route path='subject' element={<SubjectPage/>}/>
+              <Route path='unit' element={<UnitPage/>} />
+            </Route>
+          </>
+        );
+      case 'CLIENT_ROLE':
+        return (
+          <>
+            <Route path="/" element={<AdminLayout user={user} />}>
+              <Route path="dashboard" element={<>Dashboard</>} />
+              <Route path="orders" element={<>Orders</>} />
+    
+            </Route>
+          </>
+        );
+    }
+  };
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         {user.signed ? (
           <>
-            <Route path="/" element={<AdminLayout />}>
-              {
-                // routesFromRole(user?.roles[0]?.name)
-              }
-              <Route path="dashboard" element={<DashboardPage />} />
-              <Route path="users" element={<SettingsTeachers/>} />
-              <Route path="products" element={<SettingsStudents/>} />
-            </Route>
+            {routesFromRole(user?.roles[0]?.name)}
           </>
         ) : (
           <Route path="/" element={<SignInPage />} />
         )}
-        <Route path="/*" element={<> 404 not found</>} />
+        <Route path="/*" element={<>404 not found</>} />
       </>
     )
   );
-  //RouterProvider -> Context
+
   return <RouterProvider router={router} />;
 };
+
 export default AppRouter;

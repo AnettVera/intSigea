@@ -6,6 +6,7 @@ import { Label, TextInput, Button, Spinner } from 'flowbite-react';
 import AxiosClient from '../../config/http-client/axios-client';
 import { customAlert } from '../../config/alerts/alert';
 import AuthContext from '../../config/context/auth-context';
+import '../../assets/styles.css';
 import 'flowbite/dist/flowbite.css';
 import 'flowbite';
 
@@ -76,7 +77,7 @@ const SignInPage = () => {
               value={formik.values.username}
               onChange={(e) => { formik.handleChange(e); setUsername(e.target.value); }}
               onBlur={formik.handleBlur}
-              placeholder="erielit"
+              placeholder="nombre de usuario"
             />
             {formik.errors.username && formik.touched.username && (
               <span className="text-red-600">{formik.errors.username}</span>

@@ -31,6 +31,11 @@ const DashboardPage = () => {
   };
 
   return (
+    <>
+    <div className='w-full h-10 bg-blue-100 flex justify-between items-center p-4'>
+      <label style={{ fontWeight: 'bold', color: '#052368', fontSize: '1.1rem' }}>Ajustes</label>
+      
+    </div>
     <div className='flex flex-row justify-between w-full'>
       <div className='w-1/2 justify-center p-3'>
         <div className='text-center justify-center '>
@@ -127,6 +132,8 @@ const DashboardPage = () => {
       </div>
 
     </div>
+    </>
+    
   );
 };
 
