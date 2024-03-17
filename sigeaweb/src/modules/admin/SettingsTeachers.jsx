@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { HiPlus, HiMagnifyingGlass } from "react-icons/hi2";
 import { LiaUserEditSolid } from "react-icons/lia";
-import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
+import { Button, Checkbox, Label, Modal, TextInput, Tooltip } from 'flowbite-react';
+import { Switch } from '@mui/material';
+
 
 const SettingsTeachers = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -31,9 +33,11 @@ const SettingsTeachers = () => {
             <HiMagnifyingGlass style={{ color: '4480FF', fontSize: '1.5rem', fontWeight: 'bold' }} />
           </button>
         </div>
-        <button onClick={() => setOpenModal(true)} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
-          <HiPlus style={{ color: '4480FF', fontSize: '2rem', fontWeight: 'bold' }} />
-        </button>
+        <Tooltip content='Agregar unidad'>
+         <Button onClick={() => setOpenModal(true)} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
+           <HiPlus style={{ color: '4480FF', fontSize: '2rem', fontWeight: 'bold' }} />
+         </Button>
+         </Tooltip>
       </div>
 
 

@@ -7,7 +7,7 @@ import { HiOutlineCog6Tooth, HiMiniCog6Tooth, HiOutlineUsers, HiMiniUsers, HiOut
 
 const AdminLayout = () => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
-  const [selectedSection, setSelectedSection] = useState('dashboard');
+  const [selectedSection, setSelectedSection] = useState('');
 
   const toggleSidebar = () => {
     setSidebarExpanded(!isSidebarExpanded);
@@ -87,7 +87,7 @@ const AdminLayout = () => {
         <aside>
           <Sidebar
             aria-label="Default sidebar example"
-            style={{ height: '89vh', width: isSidebarExpanded ? '16rem' : '4rem' }}
+            style={{ height: '100vh', width: isSidebarExpanded ? '16rem' : '4rem' }}
           >
             <Sidebar.Items>
               <Sidebar.ItemGroup>

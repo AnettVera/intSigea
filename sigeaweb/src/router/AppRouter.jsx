@@ -16,6 +16,7 @@ import DashboardTeaceher from '../modules/teacher/DashboardPage';
 import SubjectPage from '../modules/teacher/SubjectPage';
 import UnitPage from '../modules/teacher/UnitPage';
 import ProfilePage from '../modules/teacher/ProfilePage'
+import ExamPage from '../modules/teacher/ExamPage';
 
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
@@ -38,7 +39,7 @@ const AppRouter = () => {
             <Route path="/" element={<TeacherLayout user={user} />}>
               <Route path="dashboard" element={<DashboardTeaceher/>} />
               <Route path="profile" element={<ProfilePage/>} />
-              <Route path='subject' element={<SubjectPage/>}/>
+              <Route path='exam' element={<ExamPage/>}/>
               <Route path='unit' element={<UnitPage/>} />
             </Route>
           </>

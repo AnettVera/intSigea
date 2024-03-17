@@ -3,6 +3,7 @@ export default {
   content: [
     './src/**/*.{html,js}',
     'node_modules/flowbite-react/lib/esm/**/*.js',
+    './src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {},

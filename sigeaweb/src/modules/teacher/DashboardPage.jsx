@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useState} from 'react';
 import { HiMagnifyingGlass, HiPlus} from "react-icons/hi2";
+import { Button, Checkbox, Label, Modal, TextInput, Tooltip } from 'flowbite-react';
+import RegisterSubject from './components/RegisterSubject'
 
 
 const DashboardPage = () => {
+  const [isCreating, setIsCreating] = useState(false);
+  const openRegister = () => {
+    setIsCreating(true); 
+  }
+
   return (
    <>
    <div className='w-full h-10 bg-blue-100 flex justify-between items-center p-4'>
@@ -19,12 +26,17 @@ const DashboardPage = () => {
             style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}
           >
 
-            <HiMagnifyingGlass style={{ color: '4480FF', fontSize: '1.5rem', fontWeight: 'bold' }} />
+            <HiMagnifyingGlass style={{ color: '#4480FF', fontSize: '1.5rem', fontWeight: 'bold' }} />
           </button>
         </div>
-        <button onClick={() => setOpenModal(true)} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
-          <HiPlus style={{ color: '4480FF', fontSize: '2rem', fontWeight: 'bold' }} />
-        </button>
+        <Tooltip content='Agregar materia'>
+        <Button onClick={openRegister} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
+          <HiPlus style={{ color: '#4480FF', fontSize: '2rem', fontWeight: 'bold' }} />
+        </Button>
+      </Tooltip>
+
+
+      <RegisterSubject isCreating={isCreating} setIsCreating={setIsCreating}/>
       </div>
    </>
   )
