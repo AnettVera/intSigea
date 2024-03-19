@@ -35,4 +35,46 @@
   }
   
   
+
+  /*-----------FONDO----------*/
+ 
+
+ 
+  .box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 520px;
+    height: 500px;
+    background: linear-gradient(60deg, transparent, #03BB85, #03BB85);
+    transform-origin: bottom right;
+    animation: animate 6s linear infinite;
+  }
+  .box::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 520px;
+    height: 500px;
+    background: linear-gradient(60deg, transparent, #001256, #001256);
+    transform-origin: bottom right;
+    animation: animate 6s linear infinite;
+    animation-delay: -3s;
+  }
+  @keyframes animate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+ 
+
+
+  
+
+  
   

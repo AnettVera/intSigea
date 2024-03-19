@@ -8,11 +8,11 @@ import RegisterExam from './components/RegisterExam';
 const ProfilePage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [email, setEmail] = useState('');
-  const [switchState, setSwitchState] = useState(false); 
+  const [switchState, setSwitchState] = useState(false);
   const [cardImage, setCardImage] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkxMl5IkIrSmrD0-VMmphBVDCByELcfPbk3iK2-_ZZFyhSBxty');
   const [isCreating, setIsCreating] = useState(false);
   const openRegister = () => {
-    setIsCreating(true); 
+    setIsCreating(true);
   }
   function onCloseModal() {
     setOpenModal(false);
@@ -22,7 +22,7 @@ const ProfilePage = () => {
   const handleSwitchChange = () => {
     setSwitchState(!switchState);
     // Cambiar la imagen de la card si esta activa o no 
-    setCardImage(switchState ? 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT4JyBPKMBZh4_T_8Bv1r6VqEDMCZVUFRfe0cpRPA830alFQD9q':'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQeFMMlxTaWx1WFl6Fb6PcLDaI7UxoZQPfT9Sj3Ti-VVkUppVPl');
+    setCardImage(switchState ? 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT4JyBPKMBZh4_T_8Bv1r6VqEDMCZVUFRfe0cpRPA830alFQD9q' : 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQeFMMlxTaWx1WFl6Fb6PcLDaI7UxoZQPfT9Sj3Ti-VVkUppVPl');
   };
 
 
@@ -43,7 +43,7 @@ const ProfilePage = () => {
         <Accordion>
           <Accordion.Panel>
             <Accordion.Title className='text-blue-950 bold'>Unidad 1</Accordion.Title>
-            <Accordion.Content>
+            <Accordion.Content className='flex flex-row-reverse gap-5 relative'>
 
               <Card className="w-60 justify-center text-center p-0">
                 <div className='mx-auto justify-center text-center'>
@@ -63,11 +63,31 @@ const ProfilePage = () => {
                 </Link>
               </Card>
 
-              <Tooltip content='Agregar examen'>
-          <Button onClick={openRegister} style={{ backgroundColor: '#4480FF', border: 'none', cursor: 'pointer' }}>
-            <HiPlus style={{ color: '#fff', fontSize: '2rem', fontWeight: 'bold' }} />
-          </Button>
-        </Tooltip>
+              <Card className="w-60 justify-center text-center p-0">
+                <div className='mx-auto justify-center text-center'>
+                  <Switch onChange={handleSwitchChange} checked={switchState} />
+                </div>
+                <Link to={'/exam'}>
+                  <div className='mx-auto justify-center text-center'>
+                    <img src={cardImage} alt="Estudiantes" className='w-52 h-52 p-0 m-0' />
+                  </div>
+                  <h6 className="text-lg font-bold tracking-tight text-blue-950 dark:text-white">
+                    Efbb18
+                  </h6>
+                  <p className="font-normal text-gray-700 dark:text-gray-600">
+                    Examen diagnostico
+                  </p>
+
+                </Link>
+              </Card>
+              <div className='absolute bottom-5 right-2'>
+                <Tooltip content='Agregar examen'>
+                  <Button onClick={openRegister} className='rounded-full' style={{ backgroundColor: '#4480FF', border: 'none', cursor: 'pointer', height:'2.2rem', width:'2.2rem' }}>
+                    <HiPlus style={{ color: '#fff', fontSize: '1.7rem', fontWeight: 'bold' }} />
+                  </Button>
+                </Tooltip>
+              </div>
+
             </Accordion.Content>
           </Accordion.Panel>
         </Accordion>
@@ -113,7 +133,7 @@ const ProfilePage = () => {
         </Modal.Body>
       </Modal>
 
-      <RegisterExam isCreating={isCreating} setIsCreating={setIsCreating}/>
+      <RegisterExam isCreating={isCreating} setIsCreating={setIsCreating} />
 
     </>
   )

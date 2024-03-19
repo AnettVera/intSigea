@@ -12,11 +12,13 @@ import TeacherLayout from '../components/layout/TeacherLayout';
 import DashboardPage from '../modules/admin/DashboardPage';
 import SettingsStudents from '../modules/admin/SettingsStudents';
 import SettingsTeachers from '../modules/admin/SettingsTeachers';
-import DashboardTeaceher from '../modules/teacher/DashboardPage';
-import SubjectPage from '../modules/teacher/SubjectPage';
 import UnitPage from '../modules/teacher/UnitPage';
 import ProfilePage from '../modules/teacher/ProfilePage'
 import ExamPage from '../modules/teacher/ExamPage';
+import CodeAccess from '../modules/student/CodeAccess';
+import Exam from '../modules/student/Exam';
+import History from '../modules/student/History';
+import StudentLayout from '../components/layout/StudentLayout';
 
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
@@ -47,10 +49,10 @@ const AppRouter = () => {
       case 'CLIENT_ROLE':
         return (
           <>
-            <Route path="/" element={<AdminLayout user={user} />}>
-              <Route path="dashboard" element={<>Dashboard</>} />
-              <Route path="orders" element={<>Orders</>} />
-    
+            <Route path="/" element={<StudentLayout user={user} />}>
+              <Route path="access" element={<CodeAccess user={user}/>}/>
+              <Route path="exam" element={<Exam/>} />
+              <Route path='history' element={<History/>}/>    
             </Route>
           </>
         );

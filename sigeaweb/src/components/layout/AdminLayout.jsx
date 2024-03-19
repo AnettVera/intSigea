@@ -3,7 +3,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import { HiOutlineCog6Tooth, HiMiniCog6Tooth, HiOutlineUsers, HiMiniUsers, HiOutlineAcademicCap, HiAcademicCap } from 'react-icons/hi2';
+import { HiOutlineCog6Tooth, HiMiniCog6Tooth, HiOutlineUsers, HiMiniUsers, HiOutlineAcademicCap, HiAcademicCap, HiPower } from 'react-icons/hi2';
 
 const AdminLayout = () => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
@@ -87,7 +87,7 @@ const AdminLayout = () => {
         <aside>
           <Sidebar
             aria-label="Default sidebar example"
-            style={{ height: '100vh', width: isSidebarExpanded ? '16rem' : '4rem' }}
+            style={{ height: '100vh', width: isSidebarExpanded ? '16rem' : '4rem'}}
           >
             <Sidebar.Items>
               <Sidebar.ItemGroup>
@@ -130,6 +130,14 @@ const AdminLayout = () => {
                     {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Estudiantes</span>}
                   </Link>
                 </li>
+                <li className='absolute bottom-3'>
+                    <Link
+                      className={`flex items-center justify-center rounded-lg p-2 text-base font-normal`}
+                    >
+                     <HiPower style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+                      {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Historial</span>}
+                    </Link>
+                  </li>
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           </Sidebar>

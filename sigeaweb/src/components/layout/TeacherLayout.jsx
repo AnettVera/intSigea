@@ -4,7 +4,7 @@ import { Sidebar } from 'flowbite-react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { RiHome4Fill, RiHome4Line, RiUserFill, RiUserLine, RiGitRepositoryFill, RiGitRepositoryLine } from 'react-icons/ri';
-import { HiHome, HiOutlineHome } from "react-icons/hi2";
+import { HiHome, HiOutlineHome, HiPower } from "react-icons/hi2";
 import { BiBookBookmark, BiSolidBookBookmark } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 
@@ -136,7 +136,14 @@ const TeacherLayout = () => {
                     {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Materias</span>}
                   </Link>
                 </li>
-
+                <li className='absolute bottom-3'>
+                    <Link
+                      className={`flex items-center justify-center rounded-lg p-2 text-base font-normal`}
+                    >
+                     <HiPower style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+                      {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Historial</span>}
+                    </Link>
+                  </li>
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           </Sidebar>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Select, Button, Tooltip, Radio, Label, FloatingLabel } from 'flowbite-react';
+import { Card, Button, Radio, Label, FloatingLabel } from 'flowbite-react';
 import { HiOutlineCheckCircle } from 'react-icons/hi2';
 const MulRadio = ({ onDone }) => {
     const handleDoneClick = () => {
