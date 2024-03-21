@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { Disclosure } from '@headlessui/react';
-import { Bars3Icon } from '@heroicons/react/24/outline';
-import { RiHome4Fill, RiHome4Line, RiUserFill, RiUserLine, RiGitRepositoryFill, RiGitRepositoryLine } from 'react-icons/ri';
+import { ArrowDownRightIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { RiUserFill, RiUserLine } from 'react-icons/ri';
 import { HiHome, HiOutlineHome, HiPower } from "react-icons/hi2";
 import { BiBookBookmark, BiSolidBookBookmark } from "react-icons/bi";
-import { BiSolidDownArrow } from "react-icons/bi";
+import AuthContext from '../../config/context/auth-context';
+import SubjectLayout from '../../modules/teacher/components/SubjectLayout';
+import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 
 
 
 const TeacherLayout = () => {
+  const [showSubjects, setShowSubjects] = useState(false);
+  const { dispatch } = useContext(AuthContext);
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const [selectedSection, setSelectedSection] = useState('');
+  const navigate = useNavigate();
+
+  const handleToggleSubjects = () => {
+    setShowSubjects(!showSubjects);
+  };
 
   const toggleSidebar = () => {
     setSidebarExpanded(!isSidebarExpanded);
@@ -21,6 +30,14 @@ const TeacherLayout = () => {
   const handleSectionChange = (section) => {
     setSelectedSection(section);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    dispatch({ type: 'SIGNOUT' });
+    navigate('/signin');
+  };
+
+
 
   const cogIcon = isSidebarExpanded ? (
     selectedSection === 'dashboard' ? (
@@ -102,8 +119,8 @@ const TeacherLayout = () => {
                     to={'dashboard'}
                     onClick={() => handleSectionChange('dashboard')}
                     className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'dashboard'
-                        ? 'text-zinc-950 bg-white font-bold'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                      ? 'text-zinc-950 bg-white font-bold'
+                      : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                       }`}
                   >
                     {cogIcon}
@@ -115,8 +132,8 @@ const TeacherLayout = () => {
                     to={'profile'}
                     onClick={() => handleSectionChange('profile')}
                     className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'profile'
-                        ? 'text-zinc-950 bg-white font-bold'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                      ? 'text-zinc-950 bg-white font-bold'
+                      : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                       }`}
                   >
                     {proIcon}
@@ -125,25 +142,44 @@ const TeacherLayout = () => {
                 </li>
                 <li>
                   <Link
-                    to={'subject'}
-                    onClick={() => handleSectionChange('subject')}
+                    to={'#'}
+                    onClick={handleToggleSubjects}
                     className={`flex items-center justify-center rounded-lg p-2 text-base font-normal ${selectedSection === 'subject'
-                        ? 'text-zinc-950 bg-white font-bold'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                      ? 'text-zinc-950 bg-white font-bold'
+                      : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                       }`}
                   >
                     {subIcon}
                     {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Materias</span>}
                   </Link>
                 </li>
+
+                <li>
+                  {showSubjects && (
+                    <>
+                      <Link to={'subject'} onClick={() => handleSectionChange('subject')}>
+                        <SubjectLayout />
+                      </Link>
+                      <Link to={'subject'} onClick={() => handleSectionChange('subject')}>
+                        <SubjectLayout />
+                      </Link>
+                      <Link to={'subject'} onClick={() => handleSectionChange('subject')}>
+                        <SubjectLayout />
+                      </Link>
+                    </>
+                  )}
+                </li>
+
                 <li className='absolute bottom-3'>
-                    <Link
-                      className={`flex items-center justify-center rounded-lg p-2 text-base font-normal`}
-                    >
-                     <HiPower style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-                      {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Historial</span>}
-                    </Link>
-                  </li>
+                  <Link
+                    onClick={handleLogout}
+                    className={`flex items-center justify-center rounded-lg p-2 text-base font-normal`}
+                  >
+                    <HiPower style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
+                    {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Cerrar sesión</span>}
+                  </Link>
+                </li>
+
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           </Sidebar>

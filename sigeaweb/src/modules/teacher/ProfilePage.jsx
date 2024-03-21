@@ -1,140 +1,110 @@
 import React, { useState } from 'react';
-import { HiMagnifyingGlass, HiPlus } from 'react-icons/hi2';
-import { Button, Checkbox, Label, Modal, TextInput, Tooltip, Accordion, Card } from 'flowbite-react';
-import { Switch } from '@mui/material';
-import { Link } from 'react-router-dom';
-import RegisterExam from './components/RegisterExam';
+import { Button, Label } from 'flowbite-react';
+import { HiPencil } from 'react-icons/hi2';
 
 const ProfilePage = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [email, setEmail] = useState('');
-  const [switchState, setSwitchState] = useState(false);
-  const [cardImage, setCardImage] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkxMl5IkIrSmrD0-VMmphBVDCByELcfPbk3iK2-_ZZFyhSBxty');
-  const [isCreating, setIsCreating] = useState(false);
-  const openRegister = () => {
-    setIsCreating(true);
-  }
-  function onCloseModal() {
-    setOpenModal(false);
-    setEmail('');
-  }
+  const [isEditing, setIsEditing] = useState(false);
+  const [password, setPassword] = useState('');
 
-  const handleSwitchChange = () => {
-    setSwitchState(!switchState);
-    // Cambiar la imagen de la card si esta activa o no 
-    setCardImage(switchState ? 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT4JyBPKMBZh4_T_8Bv1r6VqEDMCZVUFRfe0cpRPA830alFQD9q' : 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQeFMMlxTaWx1WFl6Fb6PcLDaI7UxoZQPfT9Sj3Ti-VVkUppVPl');
+  const [userInfo, setUserInfo] = useState({
+    firstName: 'Anett Yomali',
+    lastName: 'Vera',
+    surname: 'Carbajal',
+    curp: 'VECA040828MBCRNA6',
+    email: 'anettyomali@gmail.com',
+  });
+  const handleInputChange = (field, value) => {
+    setUserInfo((prevInfo) => ({
+      ...prevInfo,
+      [field]: value,
+    }));
+  };
+  const handleEditClick = () => {
+    setIsEditing(true);
   };
 
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsEditing(false);
+  };
   return (
     <>
-      <div className='w-full h-10 bg-blue-100 flex justify-between items-center p-4'>
-        <label style={{ fontWeight: 'bold', color: '#052368', fontSize: '1.1rem' }}>Base de datos</label>
-        <Tooltip content='Agregar unidad'>
-          <Button onClick={() => setOpenModal(true)} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
-            <HiPlus style={{ color: '4480FF', fontSize: '2rem', fontWeight: 'bold' }} />
-          </Button>
-        </Tooltip>
-
-      </div>
-
-      <div className='w-full justify-center p-5'>
-
-        <Accordion>
-          <Accordion.Panel>
-            <Accordion.Title className='text-blue-950 bold'>Unidad 1</Accordion.Title>
-            <Accordion.Content className='flex flex-row-reverse gap-5 relative'>
-
-              <Card className="w-60 justify-center text-center p-0">
-                <div className='mx-auto justify-center text-center'>
-                  <Switch onChange={handleSwitchChange} checked={switchState} />
-                </div>
-                <Link to={'/exam'}>
-                  <div className='mx-auto justify-center text-center'>
-                    <img src={cardImage} alt="Estudiantes" className='w-52 h-52 p-0 m-0' />
-                  </div>
-                  <h6 className="text-lg font-bold tracking-tight text-blue-950 dark:text-white">
-                    Efbb18
-                  </h6>
-                  <p className="font-normal text-gray-700 dark:text-gray-600">
-                    Examen diagnostico
-                  </p>
-
-                </Link>
-              </Card>
-
-              <Card className="w-60 justify-center text-center p-0">
-                <div className='mx-auto justify-center text-center'>
-                  <Switch onChange={handleSwitchChange} checked={switchState} />
-                </div>
-                <Link to={'/exam'}>
-                  <div className='mx-auto justify-center text-center'>
-                    <img src={cardImage} alt="Estudiantes" className='w-52 h-52 p-0 m-0' />
-                  </div>
-                  <h6 className="text-lg font-bold tracking-tight text-blue-950 dark:text-white">
-                    Efbb18
-                  </h6>
-                  <p className="font-normal text-gray-700 dark:text-gray-600">
-                    Examen diagnostico
-                  </p>
-
-                </Link>
-              </Card>
-              <div className='absolute bottom-5 right-2'>
-                <Tooltip content='Agregar examen'>
-                  <Button onClick={openRegister} className='rounded-full' style={{ backgroundColor: '#4480FF', border: 'none', cursor: 'pointer', height:'2.2rem', width:'2.2rem' }}>
-                    <HiPlus style={{ color: '#fff', fontSize: '1.7rem', fontWeight: 'bold' }} />
-                  </Button>
-                </Tooltip>
-              </div>
-
-            </Accordion.Content>
-          </Accordion.Panel>
-        </Accordion>
-
-      </div >
-
-
-
-      <Modal show={openModal} size="md" onClose={onCloseModal} popup>
-        <Modal.Header />
-        <Modal.Body>
-          <div className="space-y-3">
-            <h3 className="text-xl font-medium text-blue-600 dark:text-white text-center">Registro unidad</h3>
-
-            <form>
-              <div>
-                <div className="mb-0.5 block">
-                  <Label htmlFor="nombre" value="Nombre" />
-                </div>
-                <TextInput
-                  id="nombre"
-                  placeholder=""
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                />
-              </div>
-
-
-
-              <div className="flex justify-center text-sm font-medium text-gray-500 dark:text-gray-300 mt-5">
-                <button
-                  type='submit'
-                  className='bg-blue-600 text-medium px-6 py-2 rounded-md text-white'
-                >
-                  Registrar
-                </button>
-              </div>
-
-            </form>
-
+    <div className='p-12 flex justify-center'>
+    <div className='w-1/2 my-10 justify-center p-3 bg-gray-100 rounded-lg'>
+        <div className='text-center justify-center '>
+          <div className='mt-4 relative inline-flex items-center justify-center w-14 h-14 overflow-hidden rounded-full' style={{ backgroundColor: '#052368', color: '#fff', border: '4px solid#4480FF' }}>
+            <span className='font-bold text-3xl text-white dark:text-gray-300'>A</span>
           </div>
-        </Modal.Body>
-      </Modal>
+          <div className='mt-6 flex justify-center flex-row font-medium text-2xl'>
+            <Label className='mx-1'>Docente</Label>
+            <button className='bg-white rounded-full w-5 h-5 hover:bg-gray-100' onClick={handleEditClick}>
+              <HiPencil style={{ color: '#4480FF' }} className='mx-1 cursor-pointer' />
+            </button>
+          </div>
+        </div>
 
-      <RegisterExam isCreating={isCreating} setIsCreating={setIsCreating} />
+        <form onSubmit={handleSubmit}>
+          <div className='space-y-12 '>
+            <div className='border-b border-gray-900/10 pb-12 '>
+              <div className='mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'>
+                {Object.keys(userInfo).map((key) => (
+                  <div className='sm:col-span-3 mb-4' key={key}>
+                    <div className='mt-1'>
+                      <input
+                        type='text'
+                        disabled={!isEditing}
+                        value={userInfo[key]}
+                        name={key}
+                        id={key}
+                        autoComplete={key}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                        className='text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                      />
+                    </div>
+                  </div>
+                ))}
 
+                {isEditing && (
+                  <div className='sm:col-span-3 mb-4'>
+                    <div className='mt-2'>
+                      <input
+                        type='password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder='Contraseña'
+                        className='text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className='mt-6 flex items-center justify-between gap-x-6'>
+            {isEditing && (
+              <>
+                <button
+                  type='button'
+                  className='bg-red-700 px-4 py-1 text-white rounded-sm'
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type='button'
+                  className='bg-green-700 px-4 py-1 text-white rounded-sm'
+                  onClick={() => setIsEditing(false)}
+                >
+                  Guardar cambios
+                </button>
+              </>
+            )}
+          </div>
+
+        </form>
+      </div>
+    </div>
     </>
   )
 }

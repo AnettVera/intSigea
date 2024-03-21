@@ -6,12 +6,16 @@ import { Switch } from '@mui/material';
 import AxiosClient from '../../config/http-client/axios-client';
 import CustomDataTable from '../../components/shared/CustomDataTable';
 import RegisterUserS from './components/RegisterUserS';
+import UpdateStudents from './components/UpdateStudents';
 
 const SettingsStudents = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
-
+  const [isUpdate, setUpdate] = useState(false);
+  const openUpdate = () => {
+    setUpdate(true); 
+  }
 
 
   const customStyles = {
@@ -66,7 +70,7 @@ const SettingsStudents = () => {
         <div className='flex direction-row w-full text-end justify-end'>
         <Switch />
           <Tooltip content='Editar'>
-            <Button  style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', marginLeft:3}}>
+            <Button onClick={openUpdate} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', marginLeft:3}}>
               <LiaUserEditSolid style={{ color: '4480FF', fontSize: '1.3rem', fontWeight: 'bold' }} />
             </Button>
           </Tooltip>
@@ -139,7 +143,7 @@ const SettingsStudents = () => {
         </div>
 
         <RegisterUserS isCreating={isCreating} setIsCreating={setIsCreating}/>
-        
+        <UpdateStudents isUpdate={isUpdate} setUpdate={setUpdate}/>
 
       </div>
    

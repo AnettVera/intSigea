@@ -13,3 +13,4 @@ export const authManager = (state = {}, action) => {
       return state;
   }
 };
+

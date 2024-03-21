@@ -30,9 +30,10 @@ const RegisterUserD = ({ isCreating, setIsCreating }) => {
         <Modal.Header />
         <Modal.Body>
           <div className="space-y-3">
-            <h3 className="text-xl font-medium text-blue-600 dark:text-white text-center">Registro de estudiantes</h3>
+            <h3 className="text-xl font-medium text-blue-600 dark:text-white text-center">Registro de docentes</h3>
 
             <form>
+
               <div>
                 <div className="mb-0.5 block">
                   <Label htmlFor="name" value="Nombre" />
@@ -77,16 +78,8 @@ const RegisterUserD = ({ isCreating, setIsCreating }) => {
                 />
               </div>
 
-              <div>
-                <div className="mb-0.5 block">
-                  <Label htmlFor="username" value="Matricula" />
-                </div>
-                <TextInput
-                  id="username"
-                  name='username'
-                  required
-                />
-              </div>
+
+
 
 
               <div className="flex justify-center text-sm font-medium text-gray-500 dark:text-gray-300 mt-5">

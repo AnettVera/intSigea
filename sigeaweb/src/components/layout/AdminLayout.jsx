@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Sidebar } from 'flowbite-react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { HiOutlineCog6Tooth, HiMiniCog6Tooth, HiOutlineUsers, HiMiniUsers, HiOutlineAcademicCap, HiAcademicCap, HiPower } from 'react-icons/hi2';
+import AuthContext from '../../config/context/auth-context';
 
 const AdminLayout = () => {
+  const { dispatch } = useContext(AuthContext);
+  const handleLogout = () => {
+    // Eliminar el token de autenticación del almacenamiento local
+    localStorage.removeItem('user');
+    // Despachar una acción de cierre de sesión
+    dispatch({ type: 'SIGNOUT' });
+    // Redirigir al usuario a la página de inicio de sesión
+    navigate('/signin');
+  };
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const [selectedSection, setSelectedSection] = useState('');
 
@@ -132,10 +142,11 @@ const AdminLayout = () => {
                 </li>
                 <li className='absolute bottom-3'>
                     <Link
+                    onClick={handleLogout}
                       className={`flex items-center justify-center rounded-lg p-2 text-base font-normal`}
                     >
                      <HiPower style={{ color: '#6B82B8', fontSize: '1.4rem' }} />
-                      {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Historial</span>}
+                      {isSidebarExpanded && <span className="px-3 flex-1 whitespace-nowrap">Cerrar sesión</span>}
                     </Link>
                   </li>
               </Sidebar.ItemGroup>
