@@ -2,24 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Logo from '../../../../../assets/img/logo.png';
 import { isEmpty } from "lodash";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../../../config/context/AuthContext';
+import AxiosClient from '../../../../config/http-client/axios_client';
 
-export default function Login({ onLoginSuccess }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showErrorMessage, setShowErrorMessage] = useState("");
-  const [userType, setUserType] = useState(""); 
+  const { userType, onLoginSuccess } = useAuth();
+
+
 
   const login = async () => {
     if (!isEmpty(email) && !isEmpty(password)) {
-      setShowErrorMessage("");
-      
-      if (email === "Estudiante") {
-        setUserType("estudiante");
-      } else if (email === "Docente") {
-        setUserType("docente");
-      } else {
+      try {
+        const response = await AxiosClient.post('api/auth/signin', {
+          username: email,
+          password: password
+        });
+        await AsyncStorage.setItem('session', JSON.stringify(response.data));
+        onLoginSuccess(response.data); // Aqui setenamos el objeto completo al metodo de onLoginSuccess por que en el auth context ya contiene el setUserData
+
+      } catch (error) {
         setShowErrorMessage("Usuario o contraseña incorrectos");
-        setUserType(""); 
+        onLoginSuccess("");
+        console.log(`Error ${error}`);
       }
     } else {
       setShowErrorMessage("Campos obligatorios");
@@ -46,12 +54,12 @@ export default function Login({ onLoginSuccess }) {
       </View>
 
       <View style={styles.form}>
-      
+
         <View style={styles.input}>
-        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-          <Text style={styles.inputLabel}>Nombre de usuario</Text>
-          {showErrorMessage && <Text style={styles.errorMessage}>{showErrorMessage}</Text>}
-        </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.inputLabel}>Nombre de usuario</Text>
+            {showErrorMessage && <Text style={styles.errorMessage}>{showErrorMessage}</Text>}
+          </View>
           <TextInput
             placeholder='nombre_usuario'
             placeholderTextColor='#6b7288'
@@ -62,7 +70,7 @@ export default function Login({ onLoginSuccess }) {
         </View>
 
         <View style={styles.input}>
-          <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.inputLabel}>Contraseña</Text>
             {showErrorMessage && <Text style={styles.errorMessage}>{showErrorMessage}</Text>}
           </View>
@@ -71,7 +79,7 @@ export default function Login({ onLoginSuccess }) {
             placeholderTextColor='#6b7288'
             onChangeText={(text) => setPassword(text)}
             style={styles.inputControl}
-            secureTextEntry={true} 
+            secureTextEntry={true}
           />
         </View>
 

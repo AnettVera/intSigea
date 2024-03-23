@@ -10,7 +10,7 @@ const Drawer = createDrawerNavigator();
 
 export default function Navigation() {
   return (
-<NavigationContainer>
+
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
@@ -61,9 +61,8 @@ export default function Navigation() {
           }}
         />
 
-        
+
       </Drawer.Navigator>
-    </NavigationContainer>
   )
 }
 
@@ -74,4 +73,3 @@ export default function Navigation() {
       backgroundColor: '#F9F9F9', // Color de fondo del BottomTabNavigator
     },
   });
-  

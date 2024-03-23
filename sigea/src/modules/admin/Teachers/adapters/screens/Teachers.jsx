@@ -1,17 +1,49 @@
 import { StyleSheet, ScrollView, FlatList, View, SafeAreaView } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
 import { ListItem, SearchBar, Icon } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ListUsers from './components/ListTeachers';
+import AxiosClient from '../../../../../config/http-client/axios_client';
+
 
 export default function Teachers() {
   const navigation = useNavigation();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const goToTeachersSettings = (userData) => {
-    navigation.navigate('TeachersSettings', { userData });
+  const goToTeachersSettings = (user) => {
+
+    navigation.navigate('TeachersSettings', { user });
   };
-  
-  const users = [
+
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await AxiosClient.get('api/user/allTeachers');
+      setUsers(response.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      // Este retorno se llama cuando el componente pierde el foco, aquí no necesitamos hacer nada
+      return () => {};
+    }, [])
+  );
+
+
+
+
+/*
+
+  const usersw = [
     {
       id: 1,
       name: 'José Alberto',
@@ -30,7 +62,7 @@ export default function Teachers() {
       lastname: 'Launes',
       surname: 'Ramirez',
       curp: 'VIEL040124MBCRRNA6',
-    },{
+    }, {
       id: 3,
       name: 'Miguel Angel',
       lastname: 'Moreno',
@@ -103,8 +135,10 @@ export default function Teachers() {
       curp: 'VECM040729MBCRRNA6',
     }
 
-  ]
+  ]*/
 
+
+  // !!! AQUI TENGO QUE VALDIAR TOABIEN QUE SI NO TIENE ALGUNO DE SUS APELLIDOS NO SE MUESTRE O NOMBRES VACIOS
   return (
     <View style={styles.container}>
       <SearchBar
@@ -113,19 +147,20 @@ export default function Teachers() {
         lightTheme={true}
         placeholder="Buscar docente por nombre"
       />
+
       <SafeAreaView style={styles.contList}>
         <FlatList
           data={users}
           renderItem={({ item }) =>
             <ListUsers
-              name={item.name}
-              lastname={item.lastname}
-              surname={item.surname}
-              curp={item.curp}
+              name={item.person.name}
+              lastname={item.person.lastname}
+              surname={item.person.surname}
+              curp={item.person.curp}
               onPress={() => goToTeachersSettings(item)}
             />
           }
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.id_user.toString()}
         />
       </SafeAreaView>
 
@@ -136,22 +171,22 @@ export default function Teachers() {
 
 const styles = StyleSheet.create({
 
-    container: {
-      flex: 1,
-      alignContent: 'center',
-      backgroundColor: "#fff",
-    },
-    cont: {
-      backgroundColor: '#fff',
-    },
-    contInput: {
-      backgroundColor: '#f9f9f9'
-    },
-    contList: {
-      flex: 1,
-      paddingHorizontal: 10,
-      paddingVertical: 10,
-    }
+  container: {
+    flex: 1,
+    alignContent: 'center',
+    backgroundColor: "#fff",
+  },
+  cont: {
+    backgroundColor: '#fff',
+  },
+  contInput: {
+    backgroundColor: '#f9f9f9'
+  },
+  contList: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  }
 
 
 });

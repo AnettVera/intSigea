@@ -1,16 +1,45 @@
 import { StyleSheet, ScrollView, FlatList, View, SafeAreaView } from 'react-native';
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import { ListItem, SearchBar, Icon } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ListStudents from './components/ListStudents';
+import AxiosClient from '../../../../../config/http-client/axios_client';
 
 export default function Students() {
   const navigation = useNavigation();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const goToStudentSettings = (userData) => {
-    navigation.navigate('StudentSettings', { userData });
+  const goToStudentSettings = (user) => {
+    navigation.navigate('StudentSettings', { user });
   };
-  
+
+
+  const fetchData = async () => {
+
+    setLoading(true);
+    try {
+      const response = await AxiosClient.get('api/user/allStudents');
+      setUsers(response.data);
+      console.log(response.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      // Este retorno se llama cuando el componente pierde el foco, aquí no necesitamos hacer nada
+      return () => {};
+    }, [])
+  );
+
+
+  /*
   const users = [
     {
       id: 1,
@@ -106,7 +135,8 @@ export default function Students() {
     }
 
   ]
-
+  */
+// !!! AQUI TENGO QUE VALDIAR TOABIEN QUE SI NO TIENE ALGUNO DE SUS APELLIDOS NO SE MUESTRE O NOMBRES VACIOS
   return (
     <View style={styles.container}>
       <SearchBar
@@ -120,15 +150,15 @@ export default function Students() {
           data={users}
           renderItem={({ item }) =>
             <ListStudents
-              name={item.name}
-              lastname={item.lastname}
-              surname={item.surname}
-              matricula={item.matricula}
-              curp={item.curp}
-              onPress={() => goToStudentSettings(item)} 
+              name={item.person.name}
+              lastname={item.person.lastname}
+              surname={item.person.surname}
+              username={item.username}
+              curp={item.person.curp}
+              onPress={() => goToStudentSettings(item)}
             />
           }
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.id_user.toString()}
         />
       </SafeAreaView>
 
