@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { Avatar } from '@rneui/themed';
 import { Icon } from 'react-native-elements';
@@ -31,6 +31,9 @@ export default function Settings() {
   const [curp, setCurp] = useState(userData.user.person.curp);
   const [email, setEmail] = useState(userData.user.person.email);
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isTouched, setIsTouched] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
   const [fulllastname, setFullLastname] = useState(surname ? `${lastname} ${surname}` : lastname); //Apellido paterno y materno // surname es el apellido materno y lastname es el apellido paterno
   const [username, setUsername] = useState(userData.user.username);
@@ -53,7 +56,7 @@ export default function Settings() {
     setErrorLastName("");
     setErrorCURP("");
     setErrorEmail("");
-
+    setIsTouched(!isTouched);
     setEditMode(!editMode);
   };
 
@@ -147,7 +150,11 @@ export default function Settings() {
           size={24}
           name="edit"
           type="pen-to-square"
-          onPress={toggleEditMode}
+          color={isTouched ? '#f5dd4b' : '#f4f3f4'}
+          onPress={() => {
+            toggleEditMode();
+            setIsConfirmPasswordVisible(true);
+          }}
         />
       </Avatar>
 
@@ -228,9 +235,28 @@ export default function Settings() {
           editable={editMode}
         />
         {editMode ? (
-          <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-            <Text style={styles.buttonText}>Actualizar</Text>
-          </TouchableOpacity>
+          <>
+            {isConfirmPasswordVisible && (
+              <Input
+                label='Confirmar contraseña'
+                labelStyle={styles.label}
+                inputContainerStyle={styles.form}
+                inputStyle={styles.input}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                onBlur={() => {
+                  if (password !== confirmPassword) {
+                    Alert.alert('Contraseña incorrecta', 'Las contraseñas no coinciden');
+                  }
+                }}
+                editable={editMode}
+              />
+            )}
+
+            <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+              <Text style={styles.buttonText}>Actualizar</Text>
+            </TouchableOpacity>
+          </>
         ) : (
           <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
             <Text style={styles.buttonText}>Cerrar Sesión</Text>
