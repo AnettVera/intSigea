@@ -33,6 +33,12 @@ export default function TeachersSettings({ route }) {
     const [fulllastname, setFulllastname] = useState(`${lastname}${surname ? ' ' + surname : ''}`);
 
 
+    const nameUpdate = fullname.split(' ')[0];
+  const SecondNameUpdate = fullname.split(' ')[1];
+  const surnameUpdate = fulllastname.split(' ')[1];
+  const lastnameUpdate = fulllastname.split(' ')[0];
+
+
     //!! ME FALTA MANEJAR CUANDO EN LOS INPUT COMO METE SUS DOS NOMRES Y APELLIDOS Y SEPARARLOS
 
     useEffect(() => {
@@ -86,10 +92,10 @@ export default function TeachersSettings({ route }) {
         try {
             const payload = {
                 id: userData.person.id_person,
-                name: name,
-                secondName: secondName,
-                lastname: lastname,
-                surname: surname,
+                name: nameUpdate,
+                secondName: SecondNameUpdate,
+                lastname: lastnameUpdate,
+                surname: surnameUpdate,
                 email: email,
                 curp: curp,
                 user: {
@@ -97,6 +103,7 @@ export default function TeachersSettings({ route }) {
                     password: password,
                 },
             };
+
             const response = await AxiosClient.put(`api/person/teacher/${userData.id_user}`, payload);
             alert('Usuario actualizado correctamente');
             // Reiniciar mensajes de error

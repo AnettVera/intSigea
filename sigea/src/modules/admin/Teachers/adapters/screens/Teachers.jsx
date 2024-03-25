@@ -155,7 +155,7 @@ export default function Teachers() {
             <ListUsers
               name={item.person.name}
               lastname={item.person.lastname}
-              surname={item.person.surname}
+              surname={item.person.surname ? item.person.surname : ''}
               curp={item.person.curp}
               onPress={() => goToTeachersSettings(item)}
             />

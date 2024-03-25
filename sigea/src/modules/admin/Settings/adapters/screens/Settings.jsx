@@ -53,7 +53,7 @@ export default function Settings() {
     setErrorLastName("");
     setErrorCURP("");
     setErrorEmail("");
-    console.log("Comenzando actualización del usuario333333");
+
     setEditMode(!editMode);
   };
 
@@ -111,9 +111,8 @@ export default function Settings() {
           password: password,
         },
       }
-      console.log("Comenzando actualización del usuario");
+
       const response = await AxiosClient.put(`api/person/admin/${1}`, payload)
-      console.log(payload);
       alert('actualizado correctamente');
       // Reiniciar mensajes de error
       setErrorUsername("");
@@ -124,7 +123,7 @@ export default function Settings() {
       toggleEditMode();
     } catch (error) {
       alert('Error al actualizar el usuario');
-      console.log(`Error ${error}`);
+
     }
   };
 
