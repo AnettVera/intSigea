@@ -21,7 +21,6 @@ const MainApp = () => {
 
   switch (userData.roles[0].type) {
     case "STUDENT":
-
       return <NavigationStudent />;
     case "ADMIN":
       return <MainNavigation />;

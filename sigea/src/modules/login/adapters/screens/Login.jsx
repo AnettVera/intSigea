@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Logo from '../../../../../assets/img/logo.png';
 import { isEmpty } from "lodash";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../../../config/context/AuthContext';
 import AxiosClient from '../../../../config/http-client/axios_client';
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -21,19 +24,21 @@ export default function Login() {
           username: email,
           password: password
         });
-        await AsyncStorage.setItem('session', JSON.stringify(response.data));
-        onLoginSuccess(response.data); // Aqui setenamos el objeto completo al metodo de onLoginSuccess por que en el auth context ya contiene el setUserData
-
+        console.log(response.data.user);
+        if (response.data.user.status === true) {
+          Alert.alert("Inicio de sesión exitoso", "Bienvenido a SIGEA");
+          await AsyncStorage.setItem('session', JSON.stringify(response.data));
+          onLoginSuccess(response.data); // Aqui setenamos el objeto completo al metodo de onLoginSuccess por que en el auth context ya contiene el setUserData
+        }
       } catch (error) {
-        setShowErrorMessage("Usuario o contraseña incorrectos");
-        onLoginSuccess("");
+        Alert.alert("Usuario inactivo", "El usuario se encuentra inactivo, por favor contacte al administrador");
+        onLoginSuccess(null);
         console.log(`Error ${error}`);
       }
     } else {
       setShowErrorMessage("Campos obligatorios");
     }
   };
-
 
   useEffect(() => {
     if (userType) {
@@ -91,6 +96,7 @@ export default function Login() {
           </TouchableOpacity>
         </View>
       </View>
+      <FlashMessage position="top" />
     </View>
   );
 }
