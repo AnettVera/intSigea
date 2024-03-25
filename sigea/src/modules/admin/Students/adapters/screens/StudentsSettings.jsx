@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Switch, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Switch, ScrollView, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { Input, Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import AxiosClient from '../../../../../config/http-client/axios_client';
 export default function StudentSettings({ route }) {
     const navigation = useNavigation();
     const userData = route.params.user || {};
-    const [ username, setUsername ] = useState(userData.username);
+    const [username, setUsername] = useState(userData.username);
     const [name, setName] = useState(userData.person.name);
     const [lastname, setLastname] = useState(userData.person.lastname);
     const [secondName, setSecondName] = useState(userData.person.secondName); // segundo nombre
@@ -18,7 +18,8 @@ export default function StudentSettings({ route }) {
     const [email, setEmail] = useState(userData.person.email);
     const [password, setPassword] = useState('');
     const [isEnabled, setIsEnabled] = useState(userData.status); // status es un entero y isEnabled es un booleano
-
+    //contraseña validaciones
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     //Para mostrar un mensaje de error en caso de que haya un error en la actualización
     const [errorUsername, setErrorUsername] = useState("");
@@ -59,6 +60,13 @@ export default function StudentSettings({ route }) {
         setErrorLastName("");
         setErrorCURP("");
         setErrorEmail("");
+
+
+        // Validar que las contraseñas coincidan
+        if (password !== confirmPassword) {
+            Alert.alert('Contraseña incorrecta', 'Las contraseñas no coinciden');
+            return;
+        }
 
         let isValid = true;
 
@@ -230,6 +238,17 @@ export default function StudentSettings({ route }) {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                />
+                <Input
+                    label='Confirmar contraseña'
+                    labelStyle={styles.label}
+                    inputContainerStyle={styles.form}
+                    inputStyle={styles.input}
+                    secureTextEntry
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+
+
                 />
 
                 <Button

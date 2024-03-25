@@ -31,6 +31,7 @@ export default function Settings() {
   const [curp, setCurp] = useState(userData.user.person.curp);
   const [email, setEmail] = useState(userData.user.person.email);
   const [password, setPassword] = useState('');
+  //contraseña validaciones
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isTouched, setIsTouched] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
@@ -62,7 +63,10 @@ export default function Settings() {
 
   // primero entra aqui
   const handleUpdate = async () => {
-
+    if (password !== confirmPassword) {
+      Alert.alert('Contraseña incorrecta', 'Las contraseñas no coinciden');
+      return;
+    }
     // Reiniciar mensajes de error
     setErrorUsername("");
     setErrorFullName("");
@@ -231,6 +235,7 @@ export default function Settings() {
           inputContainerStyle={styles.form}
           inputStyle={styles.input}
           value={password}
+          secureTextEntry
           onChangeText={setPassword}
           editable={editMode}
         />
@@ -243,12 +248,9 @@ export default function Settings() {
                 inputContainerStyle={styles.form}
                 inputStyle={styles.input}
                 value={confirmPassword}
+                secureTextEntry
                 onChangeText={setConfirmPassword}
-                onBlur={() => {
-                  if (password !== confirmPassword) {
-                    Alert.alert('Contraseña incorrecta', 'Las contraseñas no coinciden');
-                  }
-                }}
+
                 editable={editMode}
               />
             )}

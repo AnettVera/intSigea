@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Switch, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Switch, ScrollView, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed';
 import { Input, Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import AxiosClient from '../../../../../config/http-client/axios_client';
 export default function TeachersSettings({ route }) {
     const navigation = useNavigation();
     const userData = route.params.user || {}; // esto es por que dentro de params se encuentra el objeto user y dentro de user se encuentra el objeto person // y entonces userData es igual a route.params.user que eso el el user
-    const [ username, setUsername ] = useState(userData.username); // por eso aqui es userData.person para acceder a los datos de la persona
+    const [username, setUsername] = useState(userData.username); // por eso aqui es userData.person para acceder a los datos de la persona
     const [name, setName] = useState(userData.person.name);
     const [secondName, setSecondName] = useState(userData.person.secondName); // segundo nombre
     const [lastname, setLastname] = useState(userData.person.lastname); // apellido paterno
@@ -18,6 +18,8 @@ export default function TeachersSettings({ route }) {
     const [email, setEmail] = useState(userData.person.email);
     const [password, setPassword] = useState('');
     const [isEnabled, setIsEnabled] = useState(userData.status); // status es un entero y isEnabled es un booleano
+    //contraseña validaciones
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const [errorUsername, setErrorUsername] = useState("");
     const [errorFullName, setErrorFullName] = useState("");
@@ -34,9 +36,9 @@ export default function TeachersSettings({ route }) {
 
 
     const nameUpdate = fullname.split(' ')[0];
-  const SecondNameUpdate = fullname.split(' ')[1];
-  const surnameUpdate = fulllastname.split(' ')[1];
-  const lastnameUpdate = fulllastname.split(' ')[0];
+    const SecondNameUpdate = fullname.split(' ')[1];
+    const surnameUpdate = fulllastname.split(' ')[1];
+    const lastnameUpdate = fulllastname.split(' ')[0];
 
 
     //!! ME FALTA MANEJAR CUANDO EN LOS INPUT COMO METE SUS DOS NOMRES Y APELLIDOS Y SEPARARLOS
@@ -58,6 +60,12 @@ export default function TeachersSettings({ route }) {
         setErrorLastName("");
         setErrorCURP("");
         setErrorEmail("");
+
+        // Validar que las contraseñas coincidan
+        if (password !== confirmPassword) {
+            Alert.alert('Contraseña incorrecta', 'Las contraseñas no coinciden');
+            return;
+        }
 
         let isValid = true;
 
@@ -229,6 +237,18 @@ export default function TeachersSettings({ route }) {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+
+                />
+
+                <Input
+                    label='Confirmar contraseña'
+                    labelStyle={styles.label}
+                    inputContainerStyle={styles.form}
+                    inputStyle={styles.input}
+                    secureTextEntry
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+
 
                 />
 
