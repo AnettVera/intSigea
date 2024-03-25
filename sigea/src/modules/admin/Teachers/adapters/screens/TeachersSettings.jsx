@@ -9,7 +9,7 @@ import AxiosClient from '../../../../../config/http-client/axios_client';
 export default function TeachersSettings({ route }) {
     const navigation = useNavigation();
     const userData = route.params.user || {}; // esto es por que dentro de params se encuentra el objeto user y dentro de user se encuentra el objeto person // y entonces userData es igual a route.params.user que eso el el user
-    const { username } = userData; // por eso aqui es userData.person para acceder a los datos de la persona
+    const [ username, setUsername ] = useState(userData.username); // por eso aqui es userData.person para acceder a los datos de la persona
     const [name, setName] = useState(userData.person.name);
     const [secondName, setSecondName] = useState(userData.person.secondName); // segundo nombre
     const [lastname, setLastname] = useState(userData.person.lastname); // apellido paterno
@@ -18,6 +18,12 @@ export default function TeachersSettings({ route }) {
     const [email, setEmail] = useState(userData.person.email);
     const [password, setPassword] = useState('');
     const [isEnabled, setIsEnabled] = useState(userData.status); // status es un entero y isEnabled es un booleano
+
+    const [errorUsername, setErrorUsername] = useState("");
+    const [errorFullName, setErrorFullName] = useState("");
+    const [errorLastName, setErrorLastName] = useState("");
+    const [errorCURP, setErrorCURP] = useState("");
+    const [errorEmail, setErrorEmail] = useState("");
     //puedes inicializar el estado del Switch (isEnabled) basado en este status. Por ejemplo, si status es 1, el Switch debe estar activado (true),
     // y si es diferente de 1, desactivado (false).
 
@@ -27,6 +33,7 @@ export default function TeachersSettings({ route }) {
     const [fulllastname, setFulllastname] = useState(`${lastname}${surname ? ' ' + surname : ''}`);
 
 
+    //!! ME FALTA MANEJAR CUANDO EN LOS INPUT COMO METE SUS DOS NOMRES Y APELLIDOS Y SEPARARLOS
 
     useEffect(() => {
         if (userData) {
@@ -39,9 +46,43 @@ export default function TeachersSettings({ route }) {
     };
 
     const updateTeacher = async () => {
-        console.log("ComenUpadateTeacher");
-        //Crear metodo para separar los apellidos
-        // Aqui se debe hacer el llamado a la API para actualizar el usuario
+        // Reiniciar mensajes de error
+        setErrorUsername("");
+        setErrorFullName("");
+        setErrorLastName("");
+        setErrorCURP("");
+        setErrorEmail("");
+
+        let isValid = true;
+
+        if (!username.trim()) {
+            setErrorUsername("El nombre de usuario es obligatorio.");
+            isValid = false;
+        }
+
+        if (!fullname.trim()) {
+            setErrorFullName("El nombre es obligatorio.");
+            isValid = false;
+        }
+
+        if (!fulllastname.trim()) {
+            setErrorLastName("Los apellidos son obligatorios.");
+            isValid = false;
+        }
+
+        if (curp.length !== 18) {
+            setErrorCURP("El CURP debe tener exactamente 18 caracteres.");
+            isValid = false;
+        }
+
+        if (!email.includes('@')) {
+            setErrorEmail("El correo electrónico debe contener un '@'.");
+            isValid = false;
+        }
+
+        if (!isValid) return; // Detener la ejecución si hay errores
+
+
         try {
             const payload = {
                 id: userData.person.id_person,
@@ -58,6 +99,12 @@ export default function TeachersSettings({ route }) {
             };
             const response = await AxiosClient.put(`api/person/teacher/${userData.id_user}`, payload);
             alert('Usuario actualizado correctamente');
+            // Reiniciar mensajes de error
+            setErrorUsername("");
+            setErrorFullName("");
+            setErrorLastName("");
+            setErrorCURP("");
+            setErrorEmail("");
             navigation.navigate('Teachers')
         } catch (error) {
             console.error("Error al actualizar el usuario: ", error);
@@ -66,28 +113,28 @@ export default function TeachersSettings({ route }) {
     }
 
 
-   const handleToggleSwitch = async () => {
-    const newStatus = !isEnabled;
+    const handleToggleSwitch = async () => {
+        const newStatus = !isEnabled;
 
-    try {
-        // Realiza la llamada a la API para actualizar el estado
-        const response = await AxiosClient.patch(`/api/user/${userData.id_user}`, {
-            status: newStatus
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        try {
+            // Realiza la llamada a la API para actualizar el estado
+            const response = await AxiosClient.patch(`/api/user/${userData.id_user}`, {
+                status: newStatus
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-        // Si la operación es exitosa, actualiza isEnabled para reflejar el cambio real
-         // Asumiendo que la operación fue exitosa y el estado se actualizó en el backend
-        console.log('Estado actualizado con éxito:', response.data);
-        navigation.navigate('Teachers')
-    } catch (error) {
-        console.error('Error al actualizar el estado:', error);
-        // No necesitas revertir isEnabled aquí ya que lo actualizas solo después de la confirmación exitosa
-    }
-};
+            // Si la operación es exitosa, actualiza isEnabled para reflejar el cambio real
+            // Asumiendo que la operación fue exitosa y el estado se actualizó en el backend
+            console.log('Estado actualizado con éxito:', response.data);
+            navigation.navigate('Teachers')
+        } catch (error) {
+            console.error('Error al actualizar el estado:', error);
+            // No necesitas revertir isEnabled aquí ya que lo actualizas solo después de la confirmación exitosa
+        }
+    };
 
 
 
@@ -117,6 +164,9 @@ export default function TeachersSettings({ route }) {
                     inputContainerStyle={styles.form}
                     inputStyle={styles.input}
                     value={username}
+                    onChangeText={setUsername}
+                    errorMessage={errorUsername}
+                    errorStyle={{ marginLeft: 29, fontSize: 12 }}
                 />
 
                 <Input
@@ -126,6 +176,8 @@ export default function TeachersSettings({ route }) {
                     inputStyle={styles.input}
                     value={fullname}
                     onChangeText={setFullname}
+                    errorMessage={errorFullName}
+                    errorStyle={{ marginLeft: 29, fontSize: 12 }}
                 />
 
                 <Input
@@ -135,6 +187,8 @@ export default function TeachersSettings({ route }) {
                     inputStyle={styles.input}
                     value={fulllastname}
                     onChangeText={setFulllastname}
+                    errorMessage={errorLastName}
+                    errorStyle={{ marginLeft: 29, fontSize: 12 }}
                 />
 
                 <Input
@@ -144,6 +198,8 @@ export default function TeachersSettings({ route }) {
                     inputStyle={styles.input}
                     value={curp}
                     onChangeText={setCurp}
+                    errorMessage={errorCURP}
+                    errorStyle={{ marginLeft: 29, fontSize: 12 }}
                 />
 
 
@@ -154,6 +210,8 @@ export default function TeachersSettings({ route }) {
                     inputStyle={styles.input}
                     value={email}
                     onChangeText={setEmail}
+                    errorMessage={errorEmail}
+                    errorStyle={{ marginLeft: 29, fontSize: 12 }}
                 />
 
                 <Input
@@ -164,6 +222,7 @@ export default function TeachersSettings({ route }) {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+
                 />
 
                 <Button

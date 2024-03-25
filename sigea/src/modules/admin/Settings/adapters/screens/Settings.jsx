@@ -12,7 +12,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Settings() {
   const [editMode, setEditMode] = useState(false);
+  //Para mostrar un mensaje de error en caso de que haya un error en la actualización
+  const [errorUsername, setErrorUsername] = useState("");
+  const [errorFullName, setErrorFullName] = useState("");
+  const [errorLastName, setErrorLastName] = useState("");
+  const [errorCURP, setErrorCURP] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  /////////////////////////////////////////////////////
 
+  //Para la logica de mostar los datos del usuario y poder actualizarlos
   const { userData } = useAuth();
   const navigation = useNavigation();
   const { userType, onLoginSuccess } = useAuth();
@@ -24,27 +32,70 @@ export default function Settings() {
   const [email, setEmail] = useState(userData.user.person.email);
   const [password, setPassword] = useState('');
 
-
   const [fulllastname, setFullLastname] = useState(surname ? `${lastname} ${surname}` : lastname); //Apellido paterno y materno // surname es el apellido materno y lastname es el apellido paterno
-  const [username, setUsername] = useState(`${name}_${lastname}`); //Nombre de usuario
+  const [username, setUsername] = useState(userData.user.username);
   const [fullName, setFullName] = useState(secondName ? `${name} ${secondName}` : name); //Nombre completo
 
   const nameUpdate = fullName.split(' ')[0];
   const SecondNameUpdate = fullName.split(' ')[1];
   const surnameUpdate = fulllastname.split(' ')[1];
   const lastnameUpdate = fulllastname.split(' ')[0];
-  // curp utilizamos el mismo
-  // email utilizamos el mismo
+  ////////////////////////////////////////////////////
+
+
 
 
   // Función para manejar el cambio entre modos
   const toggleEditMode = () => {
+    // Reiniciar mensajes de error
+    setErrorUsername("");
+    setErrorFullName("");
+    setErrorLastName("");
+    setErrorCURP("");
+    setErrorEmail("");
     console.log("Comenzando actualización del usuario333333");
     setEditMode(!editMode);
   };
 
   // primero entra aqui
   const handleUpdate = async () => {
+
+    // Reiniciar mensajes de error
+    setErrorUsername("");
+    setErrorFullName("");
+    setErrorLastName("");
+    setErrorCURP("");
+    setErrorEmail("");
+
+    let isValid = true;
+
+    if (!username.trim()) {
+      setErrorUsername("El nombre de usuario es obligatorio.");
+      isValid = false;
+    }
+
+    if (!fullName.trim()) {
+      setErrorFullName("El nombre es obligatorio.");
+      isValid = false;
+    }
+
+    if (!fulllastname.trim()) {
+      setErrorLastName("Los apellidos son obligatorios.");
+      isValid = false;
+    }
+
+    if (curp.length !== 18) {
+      setErrorCURP("El CURP debe tener exactamente 18 caracteres.");
+      isValid = false;
+    }
+
+    if (!email.includes('@')) {
+      setErrorEmail("El correo electrónico debe contener un '@'.");
+      isValid = false;
+    }
+
+    if (!isValid) return; // Detener la ejecución si hay errores
+
 
     try {
       const payload = {
@@ -62,17 +113,20 @@ export default function Settings() {
       }
       console.log("Comenzando actualización del usuario");
       const response = await AxiosClient.put(`api/person/admin/${1}`, payload)
+      console.log(payload);
       alert('actualizado correctamente');
+      // Reiniciar mensajes de error
+      setErrorUsername("");
+      setErrorFullName("");
+      setErrorLastName("");
+      setErrorCURP("");
+      setErrorEmail("");
       toggleEditMode();
-      console.log(response.data);
     } catch (error) {
+      alert('Error al actualizar el usuario');
       console.log(`Error ${error}`);
     }
-
-
-
   };
-
 
 
   const handleLogout = async () => {
@@ -101,74 +155,88 @@ export default function Settings() {
       <Text style={styles.name}>Admin</Text>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-      <Input
-        label='Nombre de usuario'
-        labelStyle={styles.label}
-        inputContainerStyle={styles.form}
-        inputStyle={styles.input}
-        value={username}
-        onChangeText={setUsername}
-        editable={editMode}
-      />
+        <Input
+          label='Nombre de usuario'
+          labelStyle={styles.label}
+          inputContainerStyle={styles.form}
+          inputStyle={styles.input}
+          value={username}
+          onChangeText={setUsername}
+          editable={editMode}
+          errorMessage={errorUsername}
+          errorStyle={{ marginLeft: 29, fontSize: 12 }}
 
-      <Input
-        label='Nombre'
-        labelStyle={styles.label}
-        inputContainerStyle={styles.form}
-        inputStyle={styles.input}
-        value={fullName}
-        onChangeText={setFullName}
-        editable={editMode}
-      />
+        />
 
-      <Input
-        label='Apellidos'
-        labelStyle={styles.label}
-        inputContainerStyle={styles.form}
-        inputStyle={styles.input}
-        value={fulllastname}
-        onChangeText={setFullLastname}
-        editable={editMode}
-      />
+        <Input
+          label='Nombre'
+          labelStyle={styles.label}
+          inputContainerStyle={styles.form}
+          inputStyle={styles.input}
+          value={fullName}
+          onChangeText={setFullName}
+          editable={editMode}
+          errorMessage={errorFullName}
+          errorStyle={{ marginLeft: 29, fontSize: 12 }}
 
-      <Input
-        label='CURP'
-        labelStyle={styles.label}
-        inputContainerStyle={styles.form}
-        inputStyle={styles.input}
-        value={curp}
-        onChangeText={setCurp}
-        editable={editMode}
-      />
 
-      <Input
-        label='Email'
-        labelStyle={styles.label}
-        inputContainerStyle={styles.form}
-        inputStyle={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        editable={editMode}
-      />
+        />
 
-      <Input
-        label='Contraseña'
-        labelStyle={styles.label}
-        inputContainerStyle={styles.form}
-        inputStyle={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        editable={editMode}
-      />
-      {editMode ? (
-        <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-          <Text style={styles.buttonText}>Actualizar</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
-          <Text style={styles.buttonText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
-      )}
+        <Input
+          label='Apellidos'
+          labelStyle={styles.label}
+          inputContainerStyle={styles.form}
+          inputStyle={styles.input}
+          value={fulllastname}
+          onChangeText={setFullLastname}
+          editable={editMode}
+          errorMessage={errorLastName}
+          errorStyle={{ marginLeft: 29, fontSize: 12 }}
+        />
+
+        <Input
+          label='CURP'
+          labelStyle={styles.label}
+          inputContainerStyle={styles.form}
+          inputStyle={styles.input}
+          value={curp}
+          onChangeText={setCurp}
+          editable={editMode}
+          errorMessage={errorCURP}
+          errorStyle={{ marginLeft: 29, fontSize: 12 }}
+        />
+
+        <Input
+          label='Email'
+          labelStyle={styles.label}
+          inputContainerStyle={styles.form}
+          inputStyle={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          editable={editMode}
+          errorMessage={errorEmail}
+          errorStyle={{ marginLeft: 29, fontSize: 12 }}
+        />
+
+
+        <Input
+          label='Contraseña'
+          labelStyle={styles.label}
+          inputContainerStyle={styles.form}
+          inputStyle={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          editable={editMode}
+        />
+        {editMode ? (
+          <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+            <Text style={styles.buttonText}>Actualizar</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={() => handleLogout()}>
+            <Text style={styles.buttonText}>Cerrar Sesión</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </View>
   )
@@ -220,4 +288,5 @@ const styles = StyleSheet.create({
   scrollContent: {
     alignItems: 'center', // Centra los elementos en el eje cruzado
   },
+
 })
