@@ -26,7 +26,7 @@ export default function Login() {
         });
         console.log(response.data.user);
         if (response.data.user.status === true) {
-          Alert.alert("Inicio de sesión exitoso", "Bienvenido a SIGEA");
+
           await AsyncStorage.setItem('session', JSON.stringify(response.data));
           onLoginSuccess(response.data); // Aqui setenamos el objeto completo al metodo de onLoginSuccess por que en el auth context ya contiene el setUserData
         }
