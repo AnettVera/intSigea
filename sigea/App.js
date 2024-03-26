@@ -7,8 +7,6 @@ import MainNavigation from "./src/config/navigation/Navigation";
 import React, { useState } from 'react';
 
 
-
-
 // Componente Principal que Decide qué Mostrar basado en el Estado de Autenticación
 const MainApp = () => {
   const { userData } = useAuth();

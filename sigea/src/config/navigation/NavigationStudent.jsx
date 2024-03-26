@@ -2,13 +2,18 @@ import { StyleSheet } from 'react-native';
 import React from 'react'
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import ExamStack from '../stackStudents/ExamStack'
-import HistoryStack from '../stackStudents/HistoyStack'
+import ExamStack from '../stackStudents/ExamStack';
+import HistoryStack from '../stackStudents/HistoyStack';
 import { Ionicons } from '@expo/vector-icons';
+import PerfilStack from '../stackStudents/PerfilStack';
+
 
 const Drawer = createDrawerNavigator();
 
 export default function Navigation() {
+
+
+
   return (
 
       <Drawer.Navigator
@@ -60,8 +65,20 @@ export default function Navigation() {
             ),
           }}
         />
-
-
+        <Drawer.Screen
+        name="Mi Perfil"
+        component={PerfilStack}
+        options={{
+          drawerLabel: 'Perfil',
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={size}
+              color='#4480FF'
+            />
+          ),
+        }}
+      />
       </Drawer.Navigator>
   )
 }

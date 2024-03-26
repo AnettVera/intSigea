@@ -24,7 +24,7 @@ export default function Login() {
           username: email,
           password: password
         });
-        console.log(response.data.user);
+
         if (response.data.user.status === true) {
 
           await AsyncStorage.setItem('session', JSON.stringify(response.data));

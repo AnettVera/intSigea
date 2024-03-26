@@ -1,21 +1,62 @@
-import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
 import React, { useState } from 'react'
 import Welcome from '../../../../../assets/img/welcome.png'
 import Exam from './Exam'
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../../../config/context/AuthContext';
+import AxiosClient from '../../../../config/http-client/axios_client';
 
 export default function ExamsAccess() {
     const navigation = useNavigation();
     const [accessCode, setAccessCode] = useState('');
+    const [showErrorMessage, setShowErrorMessage] = useState('');
+    const { userData } = useAuth();
+    //{}  OBjeto
+    //[ ] Arreglo
+    const { user: { id_user, username, person: { name, lastname, surname, curp } } } = userData;
 
     const user =
     {
-        name: 'Marbein Getsemani',
-        lastname: 'Colin',
-        surname: 'Cruz',
-        matricula: '20223tn054',
-        curp: 'SOGA970629HMMRRBE3'
+        name: surname ? `${name} ${surname}` : `${name}`,
+        lastname: lastname,
+        surname: surname,
+        matricula: username,
+        curp: curp,
     }
+
+
+    //Metodo para ir a comprobar el codigo de acceso y pasar al examen
+    const examValidation = async () => {
+        setShowErrorMessage('');
+        console.log(accessCode.length);
+        if (accessCode.length < 6) {
+            setShowErrorMessage('El código de acceso debe tener al menos 6 caracteres');
+            return;
+        }
+        try {
+            const codeUperCase = accessCode.toUpperCase();
+            const response = await AxiosClient.get(`api/exam/${codeUperCase}`);
+            setShowErrorMessage('');
+            console.log(response.data);
+            navigation.navigate('Exam', { exam: response.data, user: user })
+        } catch (error) {
+            Alert.alert(
+                "Código de acceso inválido",
+                "Código de acceso no válido, por favor verifique e intente de nuevo.",
+                [
+                    {
+                        text: "OK", onPress: () => {
+                        }
+                    }
+                ]
+            );
+        }
+
+
+    }
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.card}>
@@ -33,11 +74,16 @@ export default function ExamsAccess() {
                         style={styles.inputControl}
                         value={accessCode}
                         onChangeText={(text) => setAccessCode(text)}
+                        errorMessage={showErrorMessage}
+                        errorStyle={{ marginLeft: 29, fontSize: 12 }}
                     />
+                    {showErrorMessage !== '' && (
+                        <Text style={styles.errorTextStyle}>{showErrorMessage}</Text>
+                    )}
                 </View>
 
                 <View style={styles.formAction}>
-                    <TouchableOpacity onPress={() => accessCode.trim() !== '' && navigation.navigate('Exam')}>
+                    <TouchableOpacity onPress={examValidation}>
                         <View style={styles.btn}>
                             <Text style={styles.btnText}>Acceder</Text>
                         </View>
@@ -97,7 +143,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 10,
-        paddingHorizontal: 100,
+        paddingHorizontal: 95,
     },
     btnText: {
         fontSize: 18,
@@ -115,6 +161,12 @@ const styles = StyleSheet.create({
     }, img: {
         width: 150,
         height: 150,
-    }
+    },
+    errorTextStyle: {
+        color: 'red',
+        textAlign: 'center',
+        fontSize: 14,
+        marginTop: 10,
+    },
 
 })
