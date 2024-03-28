@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Card, CheckBox } from '@rneui/themed';
 
-export default function MultiAnswer({ question, options, idQuestion, questionType, onAnswerSelect }) {
+export default function MultiAnswer({ question, options, idQuestion, questionType, onAnswerSelect,errorMessage  }) {
 
     const [selectedIndex, setSelectedIndex] = useState(null);
 
@@ -25,6 +25,7 @@ export default function MultiAnswer({ question, options, idQuestion, questionTyp
                     }}
                 />
             ))}
+            {errorMessage && <Text style={{color: 'red', marginTop: 5}}>{errorMessage}</Text>}
         </Card>
     );
 }

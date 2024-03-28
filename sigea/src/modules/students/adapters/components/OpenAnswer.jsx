@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput } from 'react-native';
+import React, { useState} from 'react';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { Card } from 'react-native-elements';
 
-export default function OpenAnswer({idQuestion, question, questionType, handleOpenAnswer}) {
+export default function OpenAnswer({ idQuestion, question, questionType, handleOpenAnswer, errorMessage }) {
 
     const [text, setText] = useState('');
 
@@ -24,6 +24,8 @@ export default function OpenAnswer({idQuestion, question, questionType, handleOp
                 onChangeText={setText}
                 onBlur={handleBlur}
             />
+            {errorMessage && <Text style={{ color: 'red', marginTop: 5 }}>{errorMessage}</Text>}
+
         </Card>
     );
 }
