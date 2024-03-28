@@ -10,7 +10,8 @@ export default function ExamsAccess() {
     const navigation = useNavigation();
     const [accessCode, setAccessCode] = useState('');
     const [showErrorMessage, setShowErrorMessage] = useState('');
-    const { userData } = useAuth();
+    const { userData, setArrayData } = useAuth();
+    const { arrayDataO, setArrayDataO } = useAuth();
     //{}  OBjeto
     //[ ] Arreglo
     const { user: { id_user, username, person: { name, lastname, surname, curp } } } = userData;
@@ -34,9 +35,11 @@ export default function ExamsAccess() {
         }
         try {
             const codeUperCase = accessCode.toUpperCase();
-            const response = await AxiosClient.get(`api/exam/${codeUperCase}`);
+            const response = await AxiosClient.get(`api/exam/questionOptionCode/${codeUperCase}`);
             setShowErrorMessage('');
-            navigation.navigate('Exam', { exam: response.data , user: id_user })
+            setArrayData([]);
+            setArrayDataO([]);
+            navigation.navigate('Exam', { exam: response.data, user: id_user,})
         } catch (error) {
             Alert.alert(
                 "Código de acceso inválido",
@@ -49,8 +52,6 @@ export default function ExamsAccess() {
                 ]
             );
         }
-
-
     }
 
 

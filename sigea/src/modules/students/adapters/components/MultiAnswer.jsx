@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, CheckBox } from '@rneui/themed';
 
-export default function MultiAnswer({ question, options }) {
+export default function MultiAnswer({ question, options, idQuestion, questionType, onAnswerSelect }) {
+
     const [selectedIndex, setSelectedIndex] = useState(null);
-
-
 
     return (
         <Card containerStyle={styles.cardContainer}>
@@ -18,9 +17,12 @@ export default function MultiAnswer({ question, options }) {
                     checkedIcon="dot-circle-o"
                     uncheckedIcon="circle-o"
                     checked={option.id === selectedIndex} // Aquí comparas con option.id
-                    onPress={() => setSelectedIndex(option.id)} // Aquí también deberías usar option.id
                     containerStyle={styles.checkboxContainer}
                     textStyle={styles.checkboxText}
+                    onPress={() => {
+                        setSelectedIndex(option.id);
+                        onAnswerSelect(idQuestion, option.id, questionType); // Incluyendo questionType aquí
+                    }}
                 />
             ))}
         </Card>

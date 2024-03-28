@@ -7,16 +7,15 @@ export function useAuth() {
 }
 
 export const AuthProvider = ({ children }) => {
-  // Cambia el nombre a userData para almacenar todo el objeto de respuesta
   const [userData, setUserData] = useState(null);
-
-  // Ajusta para recibir y manejar el objeto completo
+  const [arrayData, setArrayData] = useState([]); // Agrega el nuevo estado aquí
+  const [arrayDataO, setArrayDataO] = useState([]); // Agrega el nuevo estado aquí
   const handleLoginSuccess = (data) => {
     setUserData(data);
   };
 
   return (
-    <AuthContext.Provider value={{ userData, onLoginSuccess: handleLoginSuccess }}>
+    <AuthContext.Provider value={{ userData, onLoginSuccess: handleLoginSuccess, arrayData, setArrayData, arrayDataO, setArrayDataO }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput } from 'react-native';
 import { Card } from 'react-native-elements';
 
-export default function OpenAnswer() {
+export default function OpenAnswer({idQuestion, question, questionType, handleOpenAnswer}) {
+
+    const [text, setText] = useState('');
+
+    const handleBlur = () => {
+        // Aquí puedes activar tu método
+        handleOpenAnswer(idQuestion, text, questionType)
+    }
+
     return (
         <Card
             containerStyle={styles.cardContainer}
         >
-            <Card.Title>Primera pregunta?</Card.Title>
+            <Card.Title>{question}</Card.Title>
             <Card.Divider />
             <TextInput
-                placeholder='Escribe tu respuesta...'
+                placeholder='Escribe tu respuesta...    '
                 placeholderTextColor='#6b7288'
                 style={styles.inputControl}
+                onChangeText={setText}
+                onBlur={handleBlur}
             />
         </Card>
     );
