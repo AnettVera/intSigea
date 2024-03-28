@@ -143,7 +143,7 @@ export default function TeachersSettings({ route }) {
 
             // Si la operación es exitosa, actualiza isEnabled para reflejar el cambio real
             // Asumiendo que la operación fue exitosa y el estado se actualizó en el backend
-            console.log('Estado actualizado con éxito:', response.data);
+
             navigation.navigate('Teachers')
         } catch (error) {
             console.error('Error al actualizar el estado:', error);

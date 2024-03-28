@@ -33,7 +33,7 @@ export default function Login() {
       } catch (error) {
         Alert.alert("Usuario inactivo", "El usuario se encuentra inactivo, por favor contacte al administrador");
         onLoginSuccess(null);
-        console.log(`Error ${error}`);
+
       }
     } else {
       setShowErrorMessage("Campos obligatorios");

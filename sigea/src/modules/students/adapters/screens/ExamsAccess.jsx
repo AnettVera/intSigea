@@ -28,7 +28,6 @@ export default function ExamsAccess() {
     //Metodo para ir a comprobar el codigo de acceso y pasar al examen
     const examValidation = async () => {
         setShowErrorMessage('');
-        console.log(accessCode.length);
         if (accessCode.length < 6) {
             setShowErrorMessage('El código de acceso debe tener al menos 6 caracteres');
             return;
@@ -37,8 +36,7 @@ export default function ExamsAccess() {
             const codeUperCase = accessCode.toUpperCase();
             const response = await AxiosClient.get(`api/exam/${codeUperCase}`);
             setShowErrorMessage('');
-            console.log(response.data);
-            navigation.navigate('Exam', { exam: response.data, user: user })
+            navigation.navigate('Exam', { exam: response.data , user: id_user })
         } catch (error) {
             Alert.alert(
                 "Código de acceso inválido",

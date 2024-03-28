@@ -22,7 +22,7 @@ export default function Students() {
     try {
       const response = await AxiosClient.get('api/user/allStudents');
       setUsers(response.data);
-      console.log(response.data);
+
       setLoading(false);
     } catch (error) {
       setError(error);

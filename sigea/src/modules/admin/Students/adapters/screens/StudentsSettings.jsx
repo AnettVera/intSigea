@@ -115,7 +115,7 @@ export default function StudentSettings({ route }) {
 
             // El ID del rol debe ser pasado como parte de la URL, asegúrate de tener el valor correcto para idRole
             const idRole = userData.roles[0].id_rol; // Este es un ejemplo, ajusta según cómo determinas el ID del rol en tu aplicación
-            console.log(payload);
+
             const response = await AxiosClient.put(`api/person/student/${idRole}`, payload);
             alert('Estudiante actualizado correctamente');
             // Reiniciar mensajes de error
@@ -147,7 +147,7 @@ export default function StudentSettings({ route }) {
 
             // Si la operación es exitosa, actualiza isEnabled para reflejar el cambio real
             // Asumiendo que la operación fue exitosa y el estado se actualizó en el backend
-            console.log('Estado actualizado con éxito:', response.data);
+
             navigation.navigate('Students')
         } catch (error) {
             console.error('Error al actualizar el estado:', error);

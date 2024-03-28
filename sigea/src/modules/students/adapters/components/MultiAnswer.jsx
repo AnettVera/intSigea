@@ -1,54 +1,54 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
-import React from 'react'
-import { Input } from '@rneui/base'
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { Card, CheckBox } from '@rneui/themed';
 
-export default function MultiAnswer() {
+export default function MultiAnswer({ question, options }) {
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
+
+
     return (
-        <View style={styles.container}>
-            <View style={styles.question}>
-                <Text>Primera pregunta?</Text>
-
-            </View>
-            <View style={styles.input}>
-
-                <TextInput
-                    placeholder='Escribe tu respuesta...'
-                    placeholderTextColor='#6b7288'
-                    style={styles.inputControl}
+        <Card containerStyle={styles.cardContainer}>
+            <Card.Title>{question}</Card.Title>
+            <Card.Divider />
+            {options.map((option, index) => ( /* Ahora mapea las opciones recibidas */
+                <CheckBox
+                    key={option.id} // Es mejor usar un identificador único como key, en lugar de index
+                    title={option.text} // Usa el texto de cada opción
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={option.id === selectedIndex} // Aquí comparas con option.id
+                    onPress={() => setSelectedIndex(option.id)} // Aquí también deberías usar option.id
+                    containerStyle={styles.checkboxContainer}
+                    textStyle={styles.checkboxText}
                 />
-            </View>
-        </View>
-    )
+            ))}
+        </Card>
+    );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        marginHorizontal: 5,
-        marginVertical: 10,
-
+    cardContainer: {
+        borderRadius: 20, // Esto da los bordes redondeados al Card
+        borderWidth: 0, // Esto elimina el borde del Card
+        // Añade sombra para darle un aspecto elevado, si así lo deseas
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
+        elevation: 8,
     },
-    question: {
-
-    },
-    answer: {
-        backgroundColor: '#E4EAF8'
-    },
-    input: {
+    checkboxContainer: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        margin: 0,
         marginBottom: 5,
-        alignItems: 'left',
-        textAlign: 'left'
+        padding: 0,
     },
-    inputControl: {
-        borderWidth: 2,
-        height: 44,
-        borderColor: '#f2f2f2',
-        backgroundColor: '#E4EAF8',
-        paddingHorizontal: 16,
-        borderRadius: 12,
+    checkboxText: {
         fontSize: 16,
-        fontWeight: '500',
-        color: '#222',
-        marginTop: 10,
-    }
-})
+    },
+});
