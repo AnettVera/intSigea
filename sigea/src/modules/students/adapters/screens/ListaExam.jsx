@@ -2,7 +2,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 
 export default function ListaExam(props) {
-  const { nameExam, nameSub, date, unit, score, action } = props;
+  const { nameExam, nameSub, date, unit, score, action, idExam } = props;
+
+
 
   return (
     <TouchableOpacity onPress={action} style={styles.container}>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   examName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
     color: "#052368"
