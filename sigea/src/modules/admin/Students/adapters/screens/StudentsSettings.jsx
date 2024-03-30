@@ -113,10 +113,7 @@ export default function StudentSettings({ route }) {
                 },
             };
 
-            // El ID del rol debe ser pasado como parte de la URL, asegúrate de tener el valor correcto para idRole
-            const idRole = userData.roles[0].id_rol; // Este es un ejemplo, ajusta según cómo determinas el ID del rol en tu aplicación
-
-            const response = await AxiosClient.put(`api/person/student/${idRole}`, payload);
+            const response = await AxiosClient.put(`api/person/student/${userData.id_user}`, payload);
             alert('Estudiante actualizado correctamente');
             // Reiniciar mensajes de error
             setErrorUsername("");

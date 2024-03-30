@@ -1,12 +1,14 @@
 import { StyleSheet, Image, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Welcome from '../../../../../assets/img/welcome.png'
 import Exam from './Exam'
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../../../config/context/AuthContext';
 import AxiosClient from '../../../../config/http-client/axios_client';
-
+import { useRoute } from '@react-navigation/native';
 export default function ExamsAccess() {
+    //para hacer que se ponga en blanco el input
+    const route = useRoute();
     const navigation = useNavigation();
     const [accessCode, setAccessCode] = useState('');
     const [showErrorMessage, setShowErrorMessage] = useState('');
@@ -15,6 +17,12 @@ export default function ExamsAccess() {
     //{}  OBjeto
     //[ ] Arreglo
     const { user: { id_user, username, person: { name, lastname, surname, curp } } } = userData;
+
+    // para hacer que se ponga en blanco el input
+    useEffect(() => {
+        setAccessCode('');
+    }, [route.params?.resetInput]);
+
 
     const user =
     {
@@ -25,6 +33,23 @@ export default function ExamsAccess() {
         curp: curp,
     }
 
+    //para ver si ya se ha hecho el examen
+    const checkIfExamTaken = async () => {
+        try {
+            const response = await AxiosClient.get(`api/exam/foundExamForStudent/${id_user}`);
+
+            if (response.data.length > 0) {
+                // Si la respuesta contiene datos, entonces el examen ya ha sido tomado
+                Alert.alert('Examen constestado', 'Ya has tomado este examen.');
+                return true;
+            } else {
+                // Si la respuesta no contiene datos, entonces el examen no ha sido tomado
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     //Metodo para ir a comprobar el codigo de acceso y pasar al examen
     const examValidation = async () => {
@@ -33,26 +58,30 @@ export default function ExamsAccess() {
             setShowErrorMessage('El código de acceso debe tener al menos 6 caracteres');
             return;
         }
-        try {
-            const codeUperCase = accessCode.toUpperCase();
-            const response = await AxiosClient.get(`api/exam/questionOptionCode/${codeUperCase}`);
-            setShowErrorMessage('');
-            setArrayData([]);
-            setArrayDataO([]);
-            navigation.navigate('Exam', { exam: response.data, user: id_user,})
-        } catch (error) {
-            Alert.alert(
-                "Código de acceso inválido",
-                "Código de acceso no válido, por favor verifique e intente de nuevo.",
-                [
-                    {
-                        text: "OK", onPress: () => {
+        const examTaken = await checkIfExamTaken();
+
+        if (!examTaken) {
+            try {
+                const codeUperCase = accessCode.toUpperCase();
+                const response = await AxiosClient.get(`api/exam/questionOptionCode/${codeUperCase}`);
+                setShowErrorMessage('');
+                setArrayData([]);
+                setArrayDataO([]);
+                navigation.navigate('Exam', { exam: response.data, user: id_user, })
+            } catch (error) {
+                Alert.alert(
+                    "Código de acceso inválido",
+                    "Código de acceso no válido, por favor verifique e intente de nuevo.",
+                    [
+                        {
+                            text: "OK", onPress: () => {
+                            }
                         }
-                    }
-                ]
-            );
+                    ]
+                );
+            }
         }
-    }
+    };
 
 
 

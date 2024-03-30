@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ListaExam from "./ListaExam";
 import AxiosClient from "../../../../config/http-client/axios_client";
 import { useAuth } from '../../../../config/context/AuthContext';
@@ -12,28 +12,28 @@ export default function ExamHistory(props) {
 
   useEffect(() => {
 
-  const foudExamForStudent = async () => {
-    try {
-      const response = await AxiosClient.get(`api/exam/foundExamForStudent/${id_user}`);
-      const exams = response.data.map((exam, index) => ({
-        id: index,
-        Examid : exam.idExam,
-        nameExam: exam.examName,
-        nameSub: exam.subjectName,
-        date: exam.limitDate,
-        unit: exam.unitName,
-        score: exam.average || 'N/A',
-        action: () =>
-          navigation.navigate("Results", { title: exam.examName, id_exam: exam.idExam, id_user: id_user}),
-      }));
-      setArrayExams(exams);
-    } catch (error) {
-      console.log(error);
+    const foudExamForStudent = async () => {
+      try {
+        const response = await AxiosClient.get(`api/exam/foundExamForStudent/${id_user}`);
+        const exams = response.data.map((exam, index) => ({
+          id: index,
+          Examid: exam.idExam,
+          nameExam: exam.examName,
+          nameSub: exam.subjectName,
+          date: exam.limitDate,
+          unit: exam.unitName,
+          score: exam.average || 'N/A',
+          action: () =>
+            navigation.navigate("Results", { title: exam.examName, id_exam: exam.idExam, id_user: id_user }),
+        }));
+        setArrayExams(exams);
+      } catch (error) {
+        console.log(error);
+      }
+
     }
 
-  }
-
-  foudExamForStudent();
+    foudExamForStudent();
   }, [])
 
   return (

@@ -181,7 +181,8 @@ export default function Exam({ route }) {
         }
       }
     }
-    navigation.navigate('ExamsAccess');
+    // Esto hace que se limpie el input del codigo de acceso
+    navigation.navigate('ExamsAccess', { resetInput: Date.now() });
 
   };
 
@@ -208,33 +209,33 @@ export default function Exam({ route }) {
     const errorMessage = errorMessages[question.idQuestion];
 
     switch (question.questionType) {
-        case 'OPEN_ANSWER':
-            return (
-                <OpenAnswer
-                    key={question.idQuestion}
-                    idQuestion={question.idQuestion}
-                    question={question.question}
-                    questionType={question.questionType}
-                    handleOpenAnswer={handleOpenAnswer}
-                    errorMessage={errorMessage}
-                />
-            );
-        case 'MULTIPLE_ANSWER':
-            return (
-                <MultiAnswer
-                    key={question.idQuestion}
-                    question={question.question}
-                    options={options}
-                    idQuestion={question.idQuestion}
-                    questionType={question.questionType}
-                    onAnswerSelect={handleAnswerSelect}
-                    errorMessage={errorMessage} // Pasando el mensaje de error como prop
-                />
-            );
-        default:
-            return <Text key={question.idQuestion}>Tipo de pregunta no soportado</Text>;
+      case 'OPEN_ANSWER':
+        return (
+          <OpenAnswer
+            key={question.idQuestion}
+            idQuestion={question.idQuestion}
+            question={question.question}
+            questionType={question.questionType}
+            handleOpenAnswer={handleOpenAnswer}
+            errorMessage={errorMessage}
+          />
+        );
+      case 'MULTIPLE_ANSWER':
+        return (
+          <MultiAnswer
+            key={question.idQuestion}
+            question={question.question}
+            options={options}
+            idQuestion={question.idQuestion}
+            questionType={question.questionType}
+            onAnswerSelect={handleAnswerSelect}
+            errorMessage={errorMessage} // Pasando el mensaje de error como prop
+          />
+        );
+      default:
+        return <Text key={question.idQuestion}>Tipo de pregunta no soportado</Text>;
     }
-};
+  };
 
 
 
