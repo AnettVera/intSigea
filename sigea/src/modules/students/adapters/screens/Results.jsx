@@ -11,19 +11,23 @@ export default function Results(props) {
   const { params } = props.route;
   const { title, id_exam, id_user, } = params;
   const [contentExam, setcontentExam] = useState([]); // Corrección aquí
+  // Se nececito hacer o agregar todos
 
   useEffect(() => {
     const fetchExamDetails = async () => {
       try {
-        const questionsResponse = await AxiosClient.get(`/api/exam/ExamDetailsResponseStudent/${id_user}`);
-        setcontentExam(questionsResponse.data);
+        const idUSerAndExam = id_exam + ',' + id_user;
+        console.log(idUSerAndExam);
+        const questionsResponse = await AxiosClient.get(`/api/exam/ExamDetailsResponseStudent/${idUSerAndExam}`);
+        // Assuming questionsResponse.data is an array of objects
+        setcontentExam(prevContentExam => [...prevContentExam, ...questionsResponse.data]);
+        console.log(contentExam);
       } catch (error) {
-        console.error('Error al obtener el examen:', error);
+        console.error(error);
       }
     };
-
     fetchExamDetails();
-  }, [id_exam]);
+  }, []);
 
   const parseOptions = (optionsString) => {
     if (optionsString) {

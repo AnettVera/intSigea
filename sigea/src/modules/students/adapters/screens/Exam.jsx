@@ -17,10 +17,6 @@ export default function Exam({ route }) {
   const navigation = useNavigation();
   const [errorMessages, setErrorMessages] = useState({});
 
-  console.log(
-    '******************Exam******************',
-  );
-  console.log(exam);
 
 
   //!!! el echo de mandar el examne por props no es muy eficiente pues cuando haga un examen de ams de 10 preguntas
@@ -237,7 +233,7 @@ export default function Exam({ route }) {
     }
   };
 
-
+  console.log(contentExam);
 
   return (
     <ScrollView style={styles.container}>
