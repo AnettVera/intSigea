@@ -1,40 +1,43 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import ListaExam from "./ListaExam";
 import AxiosClient from "../../../../config/http-client/axios_client";
 import { useAuth } from '../../../../config/context/AuthContext';
+
 export default function ExamHistory(props) {
   const { navigation } = props;
-  const { userData, setArrayData } = useAuth();
+  const { userData } = useAuth();
   const [arrayExams, setArrayExams] = useState([]);
 
-  const { user: { id_user, username, person: { name, lastname, surname, curp } } } = userData;
+  const { user: { id_user } } = userData;
 
-  useEffect(() => {
-
-    const foudExamForStudent = async () => {
-      try {
-        const response = await AxiosClient.get(`api/exam/foundExamForStudent/${id_user}`);
-        const exams = response.data.map((exam, index) => ({
-          id: index,
-          Examid: exam.idExam,
-          nameExam: exam.examName,
-          nameSub: exam.subjectName,
-          date: exam.limitDate,
-          unit: exam.unitName,
-          score: exam.average || 'N/A',
-          action: () =>
-            navigation.navigate("Results", { title: exam.examName, id_exam: exam.idExam, id_user: id_user }),
-        }));
-        setArrayExams(exams);
-      } catch (error) {
-        console.log(error);
-      }
-
+  const foudExamForStudent = async () => {
+    try {
+      const response = await AxiosClient.get(`api/exam/foundExamForStudent/${id_user}`);
+      const exams = response.data.map((exam, index) => ({
+        id: index,
+        Examid: exam.idExam,
+        nameExam: exam.examName,
+        nameSub: exam.subjectName,
+        date: exam.limitDate,
+        unit: exam.unitName,
+        score: exam.average || 'N/A',
+        action: () =>
+          navigation.navigate("Results", { title: exam.examName, id_exam: exam.idExam, id_user: id_user }),
+      }));
+      setArrayExams(exams);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    foudExamForStudent();
-  }, [])
+  // Usar useFocusEffect para recargar los datos cada vez que la pantalla gane foco
+  useFocusEffect(
+    useCallback(() => {
+      foudExamForStudent();
+    }, [id_user])
+  );
 
   return (
     <View style={styles.container}>
@@ -51,7 +54,7 @@ export default function ExamHistory(props) {
             idExam={item.Examid}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
       />
     </View>

@@ -31,7 +31,7 @@ const AppRouter = () => {
         return (
           <>
             <Route path="/" element={<AdminLayout user={user} />}>
-            <Route path='dashboard' element={<DashboardPage />} /> 
+            <Route path='dashboard' element={<DashboardPage />} />
             <Route path="teachers" element={<SettingsTeachers/>} />
             <Route path="students" element={<SettingsStudents/>} />
             </Route>
@@ -55,7 +55,7 @@ const AppRouter = () => {
             <Route path="/" element={<StudentLayout user={user} />}>
               <Route path="access" element={<CodeAccess user={user}/>}/>
               <Route path="exam" element={<Exam/>} />
-              <Route path='history' element={<History/>}/>    
+              <Route path='history' element={<History/>}/>
             </Route>
           </>
         );

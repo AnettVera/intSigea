@@ -33,23 +33,29 @@ export default function ExamsAccess() {
         curp: curp,
     }
 
-    //para ver si ya se ha hecho el examen
-    const checkIfExamTaken = async () => {
-        try {
-            const response = await AxiosClient.get(`api/exam/foundExamForStudent/${id_user}`);
 
+    //para ver si ya se ha hecho el examen   !! Debo de modificar esto por que con que un
+    // !! usuario con el id supongamos 3 contesta un examen y despues se le asigna a otro usuario con el id 3 el examen,
+    //!! el segundo usuario no podra contestar el examen o cuando se le dejen mas examenes al mismo usuario
+    const checkIfExamTaken = async (code) => {
+        try {
+            const idUSerAndCode = id_user + ',' + code;
+            const response = await AxiosClient.get(`api/exam/foundExamForStudentValidationCode/${idUSerAndCode}`);
+            console.log('**************************************************************************');
+            console.log(response.data);
+            console.log('**************************************************************************');
             if (response.data.length > 0) {
                 // Si la respuesta contiene datos, entonces el examen ya ha sido tomado
                 Alert.alert('Examen constestado', 'Ya has tomado este examen.');
-                return true;
+                return false;
             } else {
                 // Si la respuesta no contiene datos, entonces el examen no ha sido tomado
-                return false;
+                return true;
             }
         } catch (error) {
-            console.error(error);
         }
     };
+
 
     //Metodo para ir a comprobar el codigo de acceso y pasar al examen
     const examValidation = async () => {
@@ -58,11 +64,12 @@ export default function ExamsAccess() {
             setShowErrorMessage('El código de acceso debe tener al menos 6 caracteres');
             return;
         }
-        const examTaken = await checkIfExamTaken();
+        const codeUperCase = accessCode.toUpperCase();
 
-        if (!examTaken) {
+        if (await checkIfExamTaken(codeUperCase)) {
+            console.log('entro');
             try {
-                const codeUperCase = accessCode.toUpperCase();
+
                 const response = await AxiosClient.get(`api/exam/questionOptionCode/${codeUperCase}`);
                 setShowErrorMessage('');
                 setArrayData([]);

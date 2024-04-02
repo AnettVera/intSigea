@@ -23,6 +23,7 @@ export default function Results(props) {
         setcontentExam(prevContentExam => [...prevContentExam, ...questionsResponse.data]);
         console.log(contentExam);
       } catch (error) {
+
         console.error(error);
       }
     };
@@ -39,15 +40,15 @@ export default function Results(props) {
     }
   };
 
-  const renderQuestion = (question) => {
+  const renderQuestion = (question, index) => {
     const options = parseOptions(question.textoOpciones);
 
-    console.log(question);
+      const key = question.idQuestion;
 
     if (question.textoOpciones === null) {
       return (
         <OpenAnswerR
-          key={question.idQuestion} // unique key prop
+          key={key} // unique key prop
           idQuestion={question.idQuestion}
           question={question.pregunta}
           estadoRespuesta={question.estadoRespuesta}
@@ -60,7 +61,7 @@ export default function Results(props) {
     } else {
       return (
         <MultiAnswerR
-          key={question.idQuestion} // unique key prop
+          key={key} // unique key prop
           question={question.pregunta}
           options={options}
           idQuestion={question.idQuestion}
@@ -77,7 +78,7 @@ export default function Results(props) {
   return (
     <ScrollView style={styles.container}>
 
-<Card.Title>{contentExam[0] ? contentExam[0].nombreExamen : 'Loading...'}</Card.Title>
+<Card.Title>{contentExam[0] ? contentExam[0].exam: 'Loading...'}</Card.Title>
       <Card.Divider />
       {
         contentExam.length > 0 // Verifica que contentExam no esté vacío
