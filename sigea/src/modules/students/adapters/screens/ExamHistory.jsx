@@ -22,7 +22,7 @@ export default function ExamHistory(props) {
         nameSub: exam.subjectName,
         date: exam.limitDate,
         unit: exam.unitName,
-        score: exam.average || 'N/A',
+        score: exam.average || 'SC',
         action: () =>
           navigation.navigate("Results", { title: exam.examName, id_exam: exam.idExam, id_user: id_user }),
       }));

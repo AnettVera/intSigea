@@ -7,7 +7,7 @@ export default function ListaExam(props) {
 
 
   const handlePress = () => {
-    if (score !== 'N/A') {
+    if (score !== 'SC') {
       action();
     }
     else {
