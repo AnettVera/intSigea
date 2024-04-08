@@ -39,16 +39,16 @@ export default function ExamsAccess() {
     //!! el segundo usuario no podra contestar el examen o cuando se le dejen mas examenes al mismo usuario
     const checkIfExamTaken = async (code) => {
         try {
-            const idUSerAndCode = id_user + ',' + code;
+            console.log("entro a la funcion de checkIfExamTaken");
+            const idUSerAndCode = id_user + ',' + code.toUpperCase();
             const response = await AxiosClient.get(`api/exam/foundExamForStudentValidationCode/${idUSerAndCode}`);
-            console.log('**************************************************************************');
-            console.log(response.data);
-            console.log('**************************************************************************');
             if (response.data.length > 0) {
+                console.log('entro');
                 // Si la respuesta contiene datos, entonces el examen ya ha sido tomado
                 Alert.alert('Examen constestado', 'Ya has tomado este examen.');
                 return false;
             } else {
+                console.log('no entro');
                 // Si la respuesta no contiene datos, entonces el examen no ha sido tomado
                 return true;
             }
